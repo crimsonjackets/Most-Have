@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <link href="Urban%20Airship%20-%20Test%20Push%20Notifications_files/css.css" rel="stylesheet" type="text/css">
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Language" content="en-us">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=IE8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Urban Airship - Test Push Notifications</title>
+    <link rel="shortcut icon" href="https://s3.amazonaws.com/com.urbanairship.media.0.0001-ua1098/images/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="72x72" href="https://s3.amazonaws.com/com.urbanairship.media.0.0001-ua1098/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="https://s3.amazonaws.com/com.urbanairship.media.0.0001-ua1098/images/apple-touch-icon-114x114.png">
+    
+    
+    <script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/ga.js" async="" type="text/javascript"></script><script type="text/javascript">
+        window.__admin_media_prefix__ = "https://s3.amazonaws.com/com.urbanairship.media/admin/";
+        DEBUG = false
+    </script>
+    <link rel="stylesheet" type="text/css" href="Urban%20Airship%20-%20Test%20Push%20Notifications_files/normalize.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="Urban%20Airship%20-%20Test%20Push%20Notifications_files/grid-12-col.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="Urban%20Airship%20-%20Test%20Push%20Notifications_files/ui.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="Urban%20Airship%20-%20Test%20Push%20Notifications_files/airship.css" media="screen">
+    
+<script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/stats.js" data-requiremodule="behaviors/stats" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/inline-edit.js" data-requiremodule="behaviors/inline-edit" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/stream_002.js" data-requiremodule="behaviors/stream" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/csrf.js" data-requiremodule="behaviors/csrf" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/dashboard.js" data-requiremodule="behaviors/dashboard" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/legacy-popover.js" data-requiremodule="behaviors/legacy-popover" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/announcement.js" data-requiremodule="behaviors/announcement" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/search.js" data-requiremodule="behaviors/search" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/help.js" data-requiremodule="behaviors/help" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/jquery.js" data-requiremodule="behaviors/jquery.stream" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/plateloader.js" data-requiremodule="behaviors/plateloader" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/app_sharing.js" data-requiremodule="behaviors/app_sharing" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/request.js" data-requiremodule="modules/request" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/debounce.js" data-requiremodule="utils/debounce" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/eventemitter.js" data-requiremodule="utils/eventemitter" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/timedelta.js" data-requiremodule="utils/timedelta" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/qs.js" data-requiremodule="utils/qs" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/addcommas.js" data-requiremodule="utils/addcommas" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/migrations.js" data-requiremodule="modules/migrations" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/array_stream.js" data-requiremodule="modules/array_stream" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/object_stream.js" data-requiremodule="modules/object_stream" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/cookie.js" data-requiremodule="utils/cookie" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/scroll.js" data-requiremodule="widgets/scroll" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/plate_002.js" data-requiremodule="plugins/plate" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/autocomplete.js" data-requiremodule="widgets/autocomplete" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/simple_template.js" data-requiremodule="utils/simple_template" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/popover.js" data-requiremodule="widgets/popover" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/stream.js" data-requiremodule="utils/stream" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/inputstream.js" data-requiremodule="widgets/inputstream" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/easing.js" data-requiremodule="modules/easing" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/share_permission_dialog.js" data-requiremodule="widgets/share_permission_dialog" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/xhrstream.js" data-requiremodule="modules/xhrstream" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/through-stream.js" data-requiremodule="modules/through-stream" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/linkparse.js" data-requiremodule="utils/linkparse" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/error_list.js" data-requiremodule="templates/error_list" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/app_search_results.js" data-requiremodule="templates/includes/app_search_results" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/app_search.js" data-requiremodule="templates/includes/app_search" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script></head>
+<body id="default" class="sidebar-on">
+
+<div class="header">
+    <h1 class="logo">
+        
+        <a href="https://go.urbanairship.com/apps/" title="Urban Airship">Urban Airship</a>
+        
+    </h1>
+    
+        
+            
+                
+                
+                <ul class="util-nav appselect">
+                    <li>
+                        <a rel="app-search" href="https://go.urbanairship.com/apps/" title="BrdgeSPB" data-app-search-url="/apps/-/list/1/?per_page=5&amp;contains={{ encodeURIComponent(q) }}">
+                        <span class="sprite apps-sml-ico"></span> <span class="label">Apps</span>
+                        </a>
+                    </li>
+                    <li class="vert"><span class="shadow"></span><span class="highlight"></span></li>
+                </ul>
+            
+            <ul class="util-nav">
+                <li><p class="label">Logged in as <strong>paparotnick</strong></p></li>
+                <li class="vert"><span class="shadow"></span><span class="highlight"></span></li>
+                <li>
+                    <a href="https://go.urbanairship.com/accounts/" id="account-popover"><span class="sprite account-sml-ico"></span> <span class="label">Account</span></a>
+                    <div class="popover">
+                        <ul>
+                            <li><a href="https://go.urbanairship.com/accounts/">Account Info</a></li>
+                            
+                            <li><a href="https://go.urbanairship.com/accounts/payment/">Billing Info</a></li>
+                            <li><a href="https://go.urbanairship.com/companies/pending_shares/">Team Access</a></li>
+                            
+                            
+                            <li><a href="https://go.urbanairship.com/accounts/logout/">Log Out</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="vert"><span class="shadow"></span><span class="highlight"></span></li>
+                <li>
+                    <a href="https://go.urbanairship.com/support/" id="support-popover"><span class="sprite help-sml-ico"></span> <span class="label">Help</span></a>
+                    <div class="popover">
+                        <ul>
+                        <li><a href="https://go.urbanairship.com/support/">Support</a></li>
+                        <li><a href="http://docs.urbanairship.com/" target="_blank">Documentation</a></li>
+                        <li><a href="http://status.urbanairship.com/" target="_blank">Status Blog</a></li>
+                        <li><a href="http://urbanairship.com/contact/" target="_blank">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        
+    
+</div>
+
+ 
+
+<div class="sidebar">
+
+  <div class="app ">
+    <div class="app-icon med">
+    
+    </div>
+    <h1>BrdgeSPB</h1>
+    <p>
+    
+        <span class="meta meta-prod">Development</span>
+    
+    
+    </p>
+    
+    <a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/edit/" class="sprite edit-ico"></a>
+    
+  </div>
+
+  <ul class="sub-nav">
+
+          
+    <li class=""><a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/"><span class="sprite overview-ico"></span> Overview</a></li>
+
+    
+    
+    
+    <li class="   current    ">
+      <a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/messages/"><span class="sprite messages-ico"></span> Messages</a>
+      
+      <ul>
+        <li class=""><a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/messages/">Messages Overview</a></li>
+        <li class="sub current"><a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/test/push/">Test Push</a></li>
+        <li class="sub"><a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/test/airmail/">Test Rich Push</a></li>
+        <li class="sub"><a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/airmail/messages/welcome/">Rich Push Welcome Message</a></li>
+        <li class="sub"><a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/feeds/">RSS Feeds</a></li>
+      </ul>
+      
+    </li>
+    
+
+    
+    
+    <li class="   ">
+      <a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/segments/"><span class="sprite audience-ico"></span> Audience</a>
+      
+      <ul>
+        <li class=""><a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/segments/">Segments</a></li>
+        <li class=""><a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/device_tokens/">Device Tokens</a></li>
+        <li class="sub"><a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/apids/">APIDs</a></li>
+        <li class=""><a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/airmail/users/">Rich Push Users</a></li>
+      </ul>
+      
+    </li>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    <li class=" ">
+      <a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/reports/"><span class="sprite reports-ico"></span> Reports</a>
+      <ul class="nav">
+        
+        
+        
+        <li class=""><a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/stats/">Statistics</a></li>
+      </ul>
+    </li>
+    
+    
+    
+    
+    <li class="">
+      <a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/edit/"><span class="sprite settings-ico"></span> Settings</a>
+      <ul>
+        <li class=""><a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/edit/">App Details</a></li>
+        
+        <li class=""><a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/services/edit/">Services</a></li>
+        <li class=""><a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/api/">API Keys</a></li>
+      </ul>
+    </li>
+    
+  </ul>
+
+  
+  
+  <div class="app-footer">
+      <a href="#" class="create-btn"><span class="sprite create-ico">Create New...</span></a>
+      <div class="popover">
+        <ul>
+          
+          
+          <li><a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/broadcast/">New Push Message</a></li>
+          
+          
+          
+          <li><a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/airmail/broadcast/">New Rich Push Message</a></li>
+          
+          
+          
+          <li><a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/segments/new/">New Segment</a></li>
+          
+        </ul>
+      </div>
+  </div>
+  
+
+</div>
+
+
+
+<div class="main">
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+<div class="flash message">
+    <p>
+        
+        Okay, we sent that message.
+        
+    </p>
+</div>
+
+
+
+<div class="col eight offset-2">
+  <h2>Test Push Notifications</h2>
+  
+
+
+  
+  
+  <div class="protip">
+      <strong>PROTIP:</strong> Something not working right? Check the <a href="#" rel="console-toggle">error console</a>.
+  </div>
+
+  <div class="tabbar">
+    
+    <a id="tab-ios" href="#" class="on">iOS</a>
+    
+    
+    
+    
+    
+    
+  </div>
+
+  <div class="module" id="tab-content">
+    
+    
+    <form style="display: block;" id="tab-ios-content" action="#ios" method="post" class="tab-content">
+      <div style="display:none"><input name="csrfmiddlewaretoken" value="60fce8b52e7acc8244a6238561bc274c" type="hidden"></div>
+      <ul class="form">
+          <li><label for="id_device_token">Device token</label> <input id="id_device_token" name="device_token" value="4BE802E6B5D7555760C62C64D674BD086A3B61C13CA35ED0EB352DA46809C615" maxlength="72" type="text"></li>
+<li><label for="id_alias">Alias</label> <input id="id_alias" name="alias" maxlength="255" type="text"></li>
+<li><label for="id_badge">Badge</label> <input id="id_badge" name="badge" value="8" maxlength="255" type="text"></li>
+<li><label for="id_alert">Alert</label> <input value="ффффф" id="id_alert" name="alert" maxlength="255" type="text"></li>
+<li><label for="id_sound">Sound</label> <input id="id_sound" name="sound" maxlength="255" type="text"></li>
+<li><label for="id_payload">Payload</label> <textarea id="id_payload" rows="10" cols="40" name="payload">{"aps": {"badge": 8, "alert": "ффффф"}, "device_tokens": ["4BE802E6B5D7555760C62C64D674BD086A3B61C13CA35ED0EB352DA46809C615"]}</textarea></li>
+          <li class="submit">
+            <input name="form_type" value="ios_form" type="hidden">
+            <input value="Send it!" type="submit">
+          </li>
+      </ul>
+    </form>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+</div>
+
+
+
+</div>
+<div class="footer">
+    <a href="#" rel="nav-toggle" class="nav-toggle"><span class="sprite nav-ico"></span></a>
+    <a href="#" rel="info-toggle" title="Site info"><span class="sprite info-ico"></span></a> 
+    
+        <a href="#" rel="console-toggle" title="Error Console"><span class="sprite console-ico"></span></a>
+    
+</div>
+<div class="bottom">
+    <div class="info">
+        <p class="copyright">© 2009-2013 Urban Airship, Inc. - All Rights Reserved.  <a href="http://urbanairship.com/" target="_blank">About</a> <a href="http://urbanairship.com/legal/" target="_blank">Legal</a></p>
+        <p class="disclaimer">Apple, StoreKit and iPhone are trademarks 
+of Apple, Inc. Maponics Neighborhood Boundaries © Maponics 2012. DMA® is
+ a registered service mark of The Nielsen Company. Used under License.</p>
+    </div>
+    
+        
+
+ <div class="error-console" data-endpoint="/apps/k2iM17FLR0SJm-MQ9JmKxw/errors/">
+    <table class="target">
+        <thead>
+        <tr>
+            <td colspan="3" id="last_console_row">
+                <div class="sub-header">
+                    <h2>Error Console</h2>
+                </div>
+            </td>
+        </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot></tfoot>
+    </table>
+</div>
+
+
+    
+</div>
+
+<script type="text/javascript" src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/jquery_002.js"></script>
+<script type="text/javascript" src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/jquery_004.js"></script>
+<script type="text/javascript" src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/js_versioning.js"></script>
+
+
+
+
+<script type="text/javascript" src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/tabbar.js"></script>
+<script type="text/javascript" src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/jquery_003.js"></script>
+<script type="text/javascript" src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/test_push.js"></script>
+
+
+
+    <script type="text/javascript">
+        var require = {
+            urlArgs: js_version
+          , baseUrl:'https://s3.amazonaws.com/com.urbanairship.media.0.0001-ua1098/js'
+          , paths:{'plugins':'https://s3.amazonaws.com/com.urbanairship.media.0.0001-ua1098/js/plugins'}
+          
+          , deps: [
+            
+              "behaviors/stats",
+              "behaviors/inline-edit",
+              "behaviors/stream",
+              "behaviors/csrf",
+              "behaviors/dashboard",
+              "behaviors/legacy-popover",
+              "behaviors/announcement",
+              "behaviors/search",
+              "behaviors/help",
+              "behaviors/jquery.stream",
+              "behaviors/plateloader",
+              "behaviors/app_sharing"]
+          
+        }
+    </script>
+    <script type="text/javascript" src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/es5-shim.js"></script>
+    <script type="text/javascript" src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/json2.js"></script>
+    <script type="text/javascript" src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/plate.js"></script>
+    <script type="text/javascript" src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/require.js"></script>
+    <script type="text/javascript" src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/analytics.js"></script>
+    <script>
+      analytics.initialize({
+        'Google Analytics' : {
+              trackingId: 'UA-9135217-1'
+            , domain:     '.urbanairship.com'
+          }
+      })
+      
+      
+      analytics.identify('paparotnick', {
+        'billing_class': 'developer'
+      , 'company_id': '42191'
+      , 'created': 'March 13, 2013, 1:14 p.m.'
+      })
+      
+      
+    </script>
+
+
+
+<!-- Google Code for Customers Remarketing List -->
+<div style="position:absolute;bottom:0;">
+    <script type="text/javascript">
+        /* <![CDATA[ */
+        var google_conversion_id = 974634651;
+        var google_conversion_language = "en";
+        var google_conversion_format = "3";
+        var google_conversion_color = "666666";
+        var google_conversion_label = "PQsmCNXf8wIQm_3e0AM";
+        var google_conversion_value = 0;
+        /* ]]> */
+    </script>
+    <script type="text/javascript" src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/conversion.js"></script><img src="Urban%20Airship%20-%20Test%20Push%20Notifications_files/a.gif" border="0" height="1" width="1">
+    <noscript>
+        <div style="display:inline;">
+            <img height="1" width="1" style="border-style:none;" alt="" src="https://www.googleadservices.com/pagead/conversion/974634651/?label=PQsmCNXf8wIQm_3e0AM&amp;guid=ON&amp;script=0"/>
+        </div>
+    </noscript>
+</div>
+
+<script>
+    $("body").bind("mouseup", function(e) {
+        var popover = $("a+.popover")
+        if ($(e.target).parents('.popover').length == 0) {
+            var trigger = $(popover).parent().find("a.active")
+            $(trigger).removeClass("active")
+            $(popover).fadeOut("fast")
+        }
+    });
+</script>
+
+
+<div style="position: absolute; top: -9999px; left: -9999px; display: block;" class="popover tooltip"></div><div style="position: absolute; top: -9999px; left: -9999px; display: block;" class="popover"><div class="appselect-content">
+  
+      <div class="search">
+          <div class="search-field">
+              <input name="appselect_search" id="appselect_search" placeholder="Search Apps…" type="search">
+              <span class="loader"><span class="spinner"></span></span>
+              <span class="icon"></span>
+          </div>
+      </div>
+    <ul id="id_menu_app_list" name="container">
+<li rel="item">
+    <a href="https://go.urbanairship.com/apps/k2iM17FLR0SJm-MQ9JmKxw/">
+        <div class="app-icon">
+        
+        </div>
+        <h3>BrdgeSPB</h3>
+        <p>
+        
+            <span class="meta meta-dev">Development</span>
+        
+        
+            <span class="meta meta-active-users"><span class="app_counts_ajax" data-key="k2iM17FLR0SJm-MQ9JmKxw" data-type="devices">&nbsp;</span> Active Users</span>
+        </p>
+    </a>
+</li>
+
+<li rel="item">
+    <a href="https://go.urbanairship.com/apps/4_gYlLV5QdKDbFGagIKL-w/">
+        <div class="app-icon">
+        
+        </div>
+        <h3>test666Push</h3>
+        <p>
+        
+            <span class="meta meta-dev">Development</span>
+        
+        
+            <span class="meta meta-active-users"><span class="app_counts_ajax" data-key="4_gYlLV5QdKDbFGagIKL-w" data-type="devices">&nbsp;</span> Active Users</span>
+        </p>
+    </a>
+</li>
+
+<li rel="item">
+    <a href="https://go.urbanairship.com/apps/84gzeW9OTGaeIXD4YHzZRA/">
+        <div class="app-icon">
+        
+        </div>
+        <h3>PushUrban</h3>
+        <p>
+        
+            <span class="meta meta-dev">Development</span>
+        
+        
+            <span class="meta meta-debug">Debug</span>
+        
+            <span class="meta meta-active-users"><span class="app_counts_ajax" data-key="84gzeW9OTGaeIXD4YHzZRA" data-type="devices">&nbsp;</span> Active Users</span>
+        </p>
+    </a>
+</li>
+
+</ul>
+    <div class="btn-bar">
+        <a href="https://go.urbanairship.com/apps/new/" class="btn">Add New App</a>
+        <a href="https://go.urbanairship.com/apps/" class="btn">View All Apps</a>
+    </div>
+  
+  <span class="arrow up"></span>
+</div></div></body></html>
