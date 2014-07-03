@@ -65,11 +65,6 @@
                        applicationState:application.applicationState];
 
     
-
-
-    
-
-    return YES;
     
     
     // Override point for customization after application launch.

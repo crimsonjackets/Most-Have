@@ -28,7 +28,6 @@
 		7927AF2516FB3C83000DDC52 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7927AF2416FB3C83000DDC52 /* Security.framework */; };
 		7927AF2716FB3C8A000DDC52 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7927AF2616FB3C8A000DDC52 /* MobileCoreServices.framework */; };
 		7927AF2916FB3C93000DDC52 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7927AF2816FB3C93000DDC52 /* CFNetwork.framework */; };
-		7927AF2B16FB3C9D000DDC52 /* libUAirship-1.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7927AF2A16FB3C9D000DDC52 /* libUAirship-1.4.0.a */; };
 		7927AF2D16FB3D39000DDC52 /* AirshipConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7927AF2C16FB3D39000DDC52 /* AirshipConfig.plist */; };
 		7935D85216EB38AB004F5155 /* DrorcBRBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 7935D85116EB38AB004F5155 /* DrorcBRBack.png */; };
 		7935D85416EB3E5D004F5155 /* buttonMoreInfo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7935D85316EB3E5D004F5155 /* buttonMoreInfo.png */; };
@@ -86,7 +85,6 @@
 		79904AA217144C52002C2584 /* forBolshO.png in Resources */ = {isa = PBXBuildFile; fileRef = 79904A9517144C52002C2584 /* forBolshO.png */; };
 		79904AA317144C52002C2584 /* forGrenad.png in Resources */ = {isa = PBXBuildFile; fileRef = 79904A9617144C52002C2584 /* forGrenad.png */; };
 		79904AA417144C52002C2584 /* forTroizk.png in Resources */ = {isa = PBXBuildFile; fileRef = 79904A9717144C52002C2584 /* forTroizk.png */; };
-		79904AA817158E03002C2584 /* pushWindowOff in Resources */ = {isa = PBXBuildFile; fileRef = 79904AA617158E03002C2584 /* pushWindowOff */; };
 		79904AA917158E03002C2584 /* pushWindowOn.png in Resources */ = {isa = PBXBuildFile; fileRef = 79904AA717158E03002C2584 /* pushWindowOn.png */; };
 		799142521726C75B00121278 /* bridge_icon_black0.png in Resources */ = {isa = PBXBuildFile; fileRef = 7991424E1726C75B00121278 /* bridge_icon_black0.png */; };
 		799142531726C75B00121278 /* bridge_icon_black1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7991424F1726C75B00121278 /* bridge_icon_black1.png */; };
@@ -120,6 +118,7 @@
 		79F3F36616EF26040095B47C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79F3F36516EF26040095B47C /* CoreLocation.framework */; };
 		79F3F36916EF4AB00095B47C /* time.m in Sources */ = {isa = PBXBuildFile; fileRef = 79F3F36816EF4AAF0095B47C /* time.m */; };
 		79F3F36B16EF62340095B47C /* AnImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 79F3F36A16EF62340095B47C /* AnImg.png */; };
+		F21AB2A119656C8000101636 /* libUAirship-1.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F21AB2A019656C8000101636 /* libUAirship-1.4.0.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -146,7 +145,6 @@
 		7927AF2416FB3C83000DDC52 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		7927AF2616FB3C8A000DDC52 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		7927AF2816FB3C93000DDC52 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		7927AF2A16FB3C9D000DDC52 /* libUAirship-1.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libUAirship-1.4.0.a"; path = "Airship/libUAirship-1.4.0.a"; sourceTree = "<group>"; };
 		7927AF2C16FB3D39000DDC52 /* AirshipConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = AirshipConfig.plist; sourceTree = "<group>"; };
 		7927AF2F16FB4059000DDC52 /* UAAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UAAnalytics.h; sourceTree = "<group>"; };
 		7927AF3016FB4059000DDC52 /* UAAnalyticsDBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UAAnalyticsDBManager.h; sourceTree = "<group>"; };
@@ -293,7 +291,6 @@
 		79904A9517144C52002C2584 /* forBolshO.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = forBolshO.png; path = pictures/forBolshO.png; sourceTree = "<group>"; };
 		79904A9617144C52002C2584 /* forGrenad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = forGrenad.png; path = pictures/forGrenad.png; sourceTree = "<group>"; };
 		79904A9717144C52002C2584 /* forTroizk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = forTroizk.png; path = pictures/forTroizk.png; sourceTree = "<group>"; };
-		79904AA617158E03002C2584 /* pushWindowOff */ = {isa = PBXFileReference; lastKnownFileType = file; name = pushWindowOff; path = pictures/pushWindowOff; sourceTree = "<group>"; };
 		79904AA717158E03002C2584 /* pushWindowOn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pushWindowOn.png; path = pictures/pushWindowOn.png; sourceTree = "<group>"; };
 		7991424E1726C75B00121278 /* bridge_icon_black0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bridge_icon_black0.png; sourceTree = "<group>"; };
 		7991424F1726C75B00121278 /* bridge_icon_black1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bridge_icon_black1.png; sourceTree = "<group>"; };
@@ -342,6 +339,7 @@
 		79F3F36716EF4AAF0095B47C /* time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = time.h; sourceTree = "<group>"; };
 		79F3F36816EF4AAF0095B47C /* time.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = time.m; sourceTree = "<group>"; };
 		79F3F36A16EF62340095B47C /* AnImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AnImg.png; sourceTree = "<group>"; };
+		F21AB2A019656C8000101636 /* libUAirship-1.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libUAirship-1.4.0.a"; path = "Airship/libUAirship-1.4.0.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -349,8 +347,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F21AB2A119656C8000101636 /* libUAirship-1.4.0.a in Frameworks */,
 				79A9A62C1701ADBF00B6CD65 /* QuartzCore.framework in Frameworks */,
-				7927AF2B16FB3C9D000DDC52 /* libUAirship-1.4.0.a in Frameworks */,
 				7927AF2916FB3C93000DDC52 /* CFNetwork.framework in Frameworks */,
 				7927AF2716FB3C8A000DDC52 /* MobileCoreServices.framework in Frameworks */,
 				7927AF2516FB3C83000DDC52 /* Security.framework in Frameworks */,
@@ -692,7 +690,6 @@
 		79904AA517158DEB002C2584 /* forPush */ = {
 			isa = PBXGroup;
 			children = (
-				79904AA617158E03002C2584 /* pushWindowOff */,
 				79904AA717158E03002C2584 /* pushWindowOn.png */,
 			);
 			name = forPush;
@@ -771,8 +768,8 @@
 		79C20D6A16E0D28D00FDE6EF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F21AB2A019656C8000101636 /* libUAirship-1.4.0.a */,
 				79A9A62B1701ADBE00B6CD65 /* QuartzCore.framework */,
-				7927AF2A16FB3C9D000DDC52 /* libUAirship-1.4.0.a */,
 				7927AF2816FB3C93000DDC52 /* CFNetwork.framework */,
 				7927AF2616FB3C8A000DDC52 /* MobileCoreServices.framework */,
 				7927AF2416FB3C83000DDC52 /* Security.framework */,
@@ -905,6 +902,11 @@
 				CLASSPREFIX = BR;
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Stas;
+				TargetAttributes = {
+					79C20D6716E0D28D00FDE6EF = {
+						DevelopmentTeam = FM33Y8RWW7;
+					};
+				};
 			};
 			buildConfigurationList = 79C20D6316E0D28D00FDE6EF /* Build configuration list for PBXProject "Most Have" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -968,7 +970,6 @@
 				79904AA217144C52002C2584 /* forBolshO.png in Resources */,
 				79904AA317144C52002C2584 /* forGrenad.png in Resources */,
 				79904AA417144C52002C2584 /* forTroizk.png in Resources */,
-				79904AA817158E03002C2584 /* pushWindowOff in Resources */,
 				79904AA917158E03002C2584 /* pushWindowOn.png in Resources */,
 				793D45E61716CA7100101F7C /* NewsCell.xib in Resources */,
 				795AB9101716FB3E003F8277 /* PushCell.xib in Resources */,
@@ -1138,6 +1139,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/Stas/Desktop/Стас/Проекты/BridgeSPB/Airship",
+					"$(PROJECT_DIR)/Airship",
 				);
 				PRODUCT_NAME = "Most Have";
 				PROVISIONING_PROFILE = "";
@@ -1161,6 +1163,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/Stas/Desktop/Стас/Проекты/BridgeSPB/Airship",
+					"$(PROJECT_DIR)/Airship",
 				);
 				PRODUCT_NAME = "Most Have";
 				PROVISIONING_PROFILE = "";
