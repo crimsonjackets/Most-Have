@@ -8,6 +8,10 @@
 
 #import "MoreInfoViewController.h"
 #import "InitSlViewController.h"
+#import "MHBridgeTableViewCell.h"
+#import "MHBridgeTimeLineView.h"
+#import "MHTimeLine.h"
+#import "MHBridgeInfo.h"
 
 @interface MoreInfoViewController ()
 {   UIImageView * rightImage;
@@ -20,18 +24,26 @@
     NSInteger diffCont;
     NSInteger sizeHeigth;
     BOOL panning;
+    
+    CGFloat currentTime;
+    
 }
+
+@property NSArray *bridges;
 @end
 
 @implementation MoreInfoViewController
 
 @synthesize scroller;
 @synthesize bridge;
-@synthesize grafic;
+@synthesize grafic; //tableView
 @synthesize menu;
 @synthesize button;
 @synthesize yMenu;
 @synthesize laftBut;
+
+@synthesize bridges;
+
 
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -43,12 +55,30 @@
     [self.bridge refreshLoad:NO];
 }
 
+- (void) performInitializations
+{
+    currentTime = 91.0f;//minutes;
+    
+    [self updateBridges];
+}
+- (void) updateBridges{
+    NSLog(@"Starting updating bridges");
+    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"bridgesInfo"];
+    self.bridges = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    [self.grafic performSelectorOnMainThread:@selector(reloadData)
+                                     withObject:nil
+                                  waitUntilDone:NO];
+    NSLog(@"Bridges Updated");
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.viewWithHelp.hidden=YES;
     self.abbrView.hidden=YES;
 
+    [self performInitializations];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateBridges) name:@"updateBridges" object:nil];
     
     if(([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)&&([UIScreen mainScreen].bounds.size.height == 568.0))
     {
@@ -87,7 +117,7 @@
     self.viewWithHelp.frame=frame;
     
     self.navigationController.navigationBar.hidden=YES;
-    scroller.contentSize=CGSizeMake(960+diffCont, 300);
+    //scroller.contentSize=CGSizeMake(960+diffCont, 300);
 //    UIPanGestureRecognizer *swipeUp = [[UIPanGestureRecognizer alloc]
 //                                         initWithTarget:self
 //                                         action:@selector(openMenu:)];
@@ -108,15 +138,16 @@
 
   //  NSUserDefaults *defaults=[NSUserDefaults standardUserDefaults];
     
-    UIImage *graphIm= [NSKeyedUnarchiver unarchiveObjectWithFile:[BRAppHelpers archivePathForGraphics]];
+    //UIImage *graphIm= [NSKeyedUnarchiver unarchiveObjectWithFile:[BRAppHelpers archivePathForGraphics]];
 
     
-    self.grafic.image=graphIm;
+    self.grafic.dataSource = self;
+    self.grafic.delegate = self;
  //   NSLog(@"%@",self.grafic.image);
     
     frame=grafic.frame;
     frame.size.height+=yMenuBot;
-    frame.size.width=sizeHeigth;
+    //frame.size.width=320;
     grafic.frame=frame;
 
     
@@ -397,10 +428,11 @@
 
 -(void)updateStuff
 {
-    UIImage *graphIm= [NSKeyedUnarchiver unarchiveObjectWithFile:[BRAppHelpers archivePathForGraphics]];
+    //UIImage *graphIm= [NSKeyedUnarchiver unarchiveObjectWithFile:[BRAppHelpers archivePathForGraphics]];
     
 
-    self.grafic.image=graphIm;
+    //self.grafic.image=graphIm;
+    [self updateBridges];
     [bridge refreshLoad:NO];
 }
 
@@ -471,49 +503,163 @@ if(frame.origin.y!=460+yMenuBot)
                                           sharedApplication].statusBarOrientation;
     if (UIInterfaceOrientationIsPortrait(orientation))
     {
-                        CGRect frameScroll=self.scroller.frame;
-                [self.view insertSubview:self.abbrView aboveSubview:scroller];
-                        frameScroll.origin.y=60;
-                        frameScroll.size.height=500;
-                    frameScroll.size.width=611;
-                    CGSize sizescroll=self.scroller.contentSize;
-                    sizescroll.height=300;
-                    scroller.contentSize=CGSizeMake(960+diffCont, 300);
-                        self.scroller.frame=frameScroll;
-                        scroller.contentSize=CGSizeMake(960+diffCont, 300);
+        CGRect frameScroll=self.scroller.frame;
+        [self.view insertSubview:self.abbrView aboveSubview:scroller];
+        frameScroll.origin.y=60;
+        frameScroll.size.height=500;
+        frameScroll.size.width=320;//600
+        CGSize sizescroll=self.scroller.contentSize;
+        sizescroll.height=300;
+        scroller.contentSize=CGSizeMake(960+diffCont, 300);
+        self.scroller.frame=frameScroll;
+        scroller.contentSize=CGSizeMake(960+diffCont, 300);
         
-                    frameScroll=self.grafic.frame;
-   
-
-
-                    frameScroll.size=CGSizeMake(sizeHeigth, 350+yMenuBot);
-                    self.grafic.frame=frameScroll;
-                    
+        frameScroll=self.grafic.frame;
         
-                    [self.view insertSubview:self.menu aboveSubview:self.scroller];
+        
+        
+        frameScroll.size=CGSizeMake(320, 400+yMenuBot);
+        self.grafic.frame=frameScroll;
+        
+        
+        [self.view insertSubview:self.menu aboveSubview:self.scroller];
+        
+    }
+    else
+    {
+        for (UIView *subview in [self.view subviews]) {
+            [self.view insertSubview:self.scroller aboveSubview:subview];
         }
-        else
-        {
-                        for (UIView *subview in [self.view subviews]) {
-                            [self.view insertSubview:self.scroller aboveSubview:subview];
-                        }
-                        
-                        CGRect frameScroll=self.scroller.frame;
-                        frameScroll.origin.y=0;
-                        frameScroll.size.height=[UIScreen mainScreen].bounds.size.width;
-                        frameScroll.size.width=[UIScreen mainScreen].bounds.size.height;
-                        self.scroller.frame=frameScroll;
-                    CGSize size=self.scroller.contentSize;
-                    size.width=580;
-                    self.scroller.contentSize=size;
-                        frameScroll=self.grafic.frame;
-                    frameScroll.size=CGSizeMake(595, 300);
-                    self.grafic.frame=frameScroll;
-        }
+        
+        CGRect frameScroll=self.scroller.frame;
+        frameScroll.origin.y=15;
+        frameScroll.size.height=[UIScreen mainScreen].bounds.size.width;
+        frameScroll.size.width=[UIScreen mainScreen].bounds.size.height;
+        self.scroller.frame=frameScroll;
+        //CGSize size=self.scroller.contentSize;
+        //size.width=570;
+        //self.scroller.contentSize=size;
+        frameScroll=self.grafic.frame;
+        frameScroll.size=CGSizeMake(self.scroller.frame.size.width, 305);
+        self.grafic.frame=frameScroll;
+        
+        
+    }
+    [self.grafic reloadData];
 }
 
 
 
+//grafic == tableView data source and delegate methods
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    //#warning Potentially incomplete method implementation.
+    // Return the number of sections.
+    return 1;
+}
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    //#warning Incomplete method implementation.
+    // Return the number of rows in the section.
+    return [self.bridges count];
+}
+
+- (MHBridgeTableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    MHBridgeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MHBridgeTableViewCell" forIndexPath:indexPath];
+    
+    // Configure the cell..
+    
+    int index = indexPath.row;
+    NSLog(@"Configuring cell at index %d", index);
+    cell.nameLabel.text = ((MHBridgeInfo *) bridges[index]).name ;
+    //cell.nameLabel.text = [NSString stringWithFormat:@"%C%C",[((Bridge *) bridges[index]).name characterAtIndex:0],
+    //                       [((Bridge *) bridges[index]).name characterAtIndex:1]];
+    cell.timeLine.bridgeOpen = ((MHBridgeInfo *) bridges[index]).openTime;
+    cell.timeLine.bridgeClose = ((MHBridgeInfo *) bridges[index]).closeTime;
+    cell.timeLine.bridgeIsOpenedTwoTimes = ((MHBridgeInfo *) bridges[index]).isOpenedTwoTimes;
+    cell.timeLine.bridgeOpen2 = ((MHBridgeInfo *) bridges[index]).openTime2;
+    cell.timeLine.bridgeClose2 = ((MHBridgeInfo *) bridges[index]).closeTime2;
+    cell.timeLine.progress = currentTime;
+    //[cell.timeLine changeStateToSmall]; // state = small; view will be redrawn
+    
+    UIInterfaceOrientation orientation = [UIApplication
+                                          sharedApplication].statusBarOrientation;
+    if (UIInterfaceOrientationIsPortrait(orientation))
+    {
+        CGRect frame=cell.timeLine.frame;
+        frame.size=CGSizeMake(280, cell.timeLine.frame.size.height);
+        cell.timeLine.frame = frame;
+    } else {
+        CGRect frame=cell.timeLine.frame;
+        frame.size=CGSizeMake(528, cell.timeLine.frame.size.height);
+        cell.timeLine.frame = frame;
+    }
+    
+    [cell.timeLine setNeedsDisplay];
+    [cell.timeLine setBackgroundColor:[UIColor clearColor]];
+    UIImage *bridgeImage;
+    if (currentTime > cell.timeLine.bridgeOpen  && currentTime < cell.timeLine.bridgeClose){
+        //bridge is opened now;
+        bridgeImage = [UIImage imageNamed:@"bridge_icon_black0"];
+        [cell setBackgroundColor:[UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.03]];
+        //[cell.timeLine setBackgroundColor:[UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.2]];
+        
+    } else {
+        //bridge is closed;
+        bridgeImage = [UIImage imageNamed:@"bridge_icon_black1"];
+        [cell setBackgroundColor:[UIColor colorWithRed:0.0 green:1.0 blue:0.0 alpha:0.03]];
+        //[cell.timeLine setBackgroundColor:[UIColor colorWithRed:0.0 green:1.0 blue:0.0 alpha:0.2]];
+        
+    }
+    if (cell.timeLine.bridgeIsOpenedTwoTimes) {
+        if (currentTime > cell.timeLine.bridgeOpen2  && currentTime < cell.timeLine.bridgeClose2){
+            //bridge is opened now;
+            [cell setBackgroundColor:[UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.03]];
+            //[cell.timeLine setBackgroundColor:[UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.2]];
+            
+            bridgeImage = [UIImage imageNamed:@"bridge_icon_black0"];
+        }
+        
+    }
+    cell.imageView.image = bridgeImage;
+    cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    
+    return cell;
+    
+}
+//Custom row height;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 55.0f;//44.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    MHTimeLine *headerView = [[MHTimeLine alloc] init];
+    headerView.backgroundColor = [UIColor whiteColor];
+    headerView.alpha = 0.8f;
+    [headerView setProgress: currentTime];
+    /*
+    UIInterfaceOrientation orientation = [UIApplication
+                                          sharedApplication].statusBarOrientation;
+    if (UIInterfaceOrientationIsPortrait(orientation))
+    {
+        CGRect frame=headerView.frame;
+        frame.size=CGSizeMake(280, headerView.frame.size.height);
+        headerView.frame = frame;
+    } else {
+        CGRect frame=headerView.frame;
+        frame.size=CGSizeMake(528, headerView.frame.size.height);
+        headerView.frame = frame;
+    }*/
+    
+    return headerView;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 20.0f;
+}
 
 @end

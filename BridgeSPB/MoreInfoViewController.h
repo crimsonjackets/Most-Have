@@ -19,17 +19,20 @@
 #import "MenuViewController.h"
 
 
-@interface MoreInfoViewController : UIViewController<UIScrollViewAccessibilityDelegate,UIScrollViewDelegate>
+@interface MoreInfoViewController : UIViewController<UIScrollViewAccessibilityDelegate,UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *abbrView;
 @property (weak, nonatomic) IBOutlet UIView *viewWithHelp;
 @property (weak, nonatomic) IBOutlet UIScrollView *scroller;
 @property (nonatomic, strong) Bridge * bridge;
-@property (weak, nonatomic) IBOutlet UIImageView *grafic;
+@property (weak, nonatomic) IBOutlet UITableView *grafic;
 @property (weak, nonatomic) IBOutlet UIView *menu;
 @property(nonatomic) int yMenu;
 @property (weak, nonatomic) IBOutlet UIButton *button;
 - (IBAction)goMap:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *laftBut;
+
+
+- (void) updateBridges;
 
 @end
