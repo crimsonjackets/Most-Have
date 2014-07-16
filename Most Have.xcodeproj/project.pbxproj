@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F323D91197569350043F404 /* MHBridgeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F323D90197569350043F404 /* MHBridgeInfo.m */; };
+		1F323D9419756A370043F404 /* MHBridgeTimeLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F323D9319756A370043F404 /* MHBridgeTimeLineView.m */; };
+		1F323D97197570070043F404 /* MHTimeLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F323D96197570070043F404 /* MHTimeLine.m */; };
+		1F323D9A197570C10043F404 /* MHBridgeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F323D99197570C10043F404 /* MHBridgeTableViewCell.m */; };
 		7909FFB616E8878C003908E8 /* OneBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 7909FFB516E8878C003908E8 /* OneBridge.m */; };
 		7915B91316E7903100F7D741 /* BRBridgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7915B91216E7903100F7D741 /* BRBridgeViewController.m */; };
 		791AB64316F0833F00B718A3 /* aNevsk.png in Resources */ = {isa = PBXBuildFile; fileRef = 791AB63916F0833F00B718A3 /* aNevsk.png */; };
@@ -122,6 +126,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1F323D8F197569350043F404 /* MHBridgeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MHBridgeInfo.h; path = ../MHBridgeInfo.h; sourceTree = "<group>"; };
+		1F323D90197569350043F404 /* MHBridgeInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MHBridgeInfo.m; path = ../MHBridgeInfo.m; sourceTree = "<group>"; };
+		1F323D9219756A370043F404 /* MHBridgeTimeLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHBridgeTimeLineView.h; sourceTree = "<group>"; };
+		1F323D9319756A370043F404 /* MHBridgeTimeLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHBridgeTimeLineView.m; sourceTree = "<group>"; };
+		1F323D95197570070043F404 /* MHTimeLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHTimeLine.h; sourceTree = "<group>"; };
+		1F323D96197570070043F404 /* MHTimeLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHTimeLine.m; sourceTree = "<group>"; };
+		1F323D98197570C10043F404 /* MHBridgeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHBridgeTableViewCell.h; sourceTree = "<group>"; };
+		1F323D99197570C10043F404 /* MHBridgeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHBridgeTableViewCell.m; sourceTree = "<group>"; };
 		7909FFB416E8878C003908E8 /* OneBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OneBridge.h; sourceTree = "<group>"; };
 		7909FFB516E8878C003908E8 /* OneBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OneBridge.m; sourceTree = "<group>"; };
 		7915B91116E7903100F7D741 /* BRBridgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRBridgeViewController.h; sourceTree = "<group>"; };
@@ -800,6 +812,14 @@
 				79A9A6201701AC8E00B6CD65 /* sliderMenu */,
 				79F3F36116EF252A0095B47C /* MapView */,
 				79C20D9516E0D73E00FDE6EF /* Bridge */,
+				1F323D8F197569350043F404 /* MHBridgeInfo.h */,
+				1F323D90197569350043F404 /* MHBridgeInfo.m */,
+				1F323D9219756A370043F404 /* MHBridgeTimeLineView.h */,
+				1F323D9319756A370043F404 /* MHBridgeTimeLineView.m */,
+				1F323D95197570070043F404 /* MHTimeLine.h */,
+				1F323D96197570070043F404 /* MHTimeLine.m */,
+				1F323D98197570C10043F404 /* MHBridgeTableViewCell.h */,
+				1F323D99197570C10043F404 /* MHBridgeTableViewCell.m */,
 				79C20D7A16E0D28D00FDE6EF /* BRAppDelegate.h */,
 				79C20D7B16E0D28D00FDE6EF /* BRAppDelegate.m */,
 				79C20D8316E0D28D00FDE6EF /* MainStoryboard.storyboard */,
@@ -1013,6 +1033,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F323D9A197570C10043F404 /* MHBridgeTableViewCell.m in Sources */,
 				79C20D7816E0D28D00FDE6EF /* main.m in Sources */,
 				79C20D7C16E0D28D00FDE6EF /* BRAppDelegate.m in Sources */,
 				79C20D8816E0D28D00FDE6EF /* BRViewController.m in Sources */,
@@ -1022,6 +1043,7 @@
 				79F3F36016EF25210095B47C /* Annotation.m in Sources */,
 				79F3F36416EF25520095B47C /* BRMAPViewController.m in Sources */,
 				79F3F36916EF4AB00095B47C /* time.m in Sources */,
+				1F323D9419756A370043F404 /* MHBridgeTimeLineView.m in Sources */,
 				79A9A61F1701AC8800B6CD65 /* InitSlViewController.m in Sources */,
 				79A9A6281701ACBF00B6CD65 /* ECSlidingViewController.m in Sources */,
 				79A9A6291701ACBF00B6CD65 /* UIImage+ImageWithUIView.m in Sources */,
@@ -1029,6 +1051,7 @@
 				7994589F17044AC800D79DE7 /* MoreInfoViewController.m in Sources */,
 				798A25C6170AE79300FAD017 /* BRAppHelpers.m in Sources */,
 				79904A8117141743002C2584 /* BRPushViewController.m in Sources */,
+				1F323D97197570070043F404 /* MHTimeLine.m in Sources */,
 				79904A871714175C002C2584 /* BRNewsViewController.m in Sources */,
 				793D45E41716CA5600101F7C /* BRCellNewsCell.m in Sources */,
 				795EF67B1717FE7C00342DD6 /* BRPushCell.m in Sources */,
@@ -1036,6 +1059,7 @@
 				795EF682171819D800342DD6 /* Reachability.m in Sources */,
 				79EFAEF4172FDCC3006253A4 /* BRAboutViewController.m in Sources */,
 				798D58DF173A595800771205 /* BRNavigatViewController.m in Sources */,
+				1F323D91197569350043F404 /* MHBridgeInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1087,7 +1111,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -1115,7 +1139,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";

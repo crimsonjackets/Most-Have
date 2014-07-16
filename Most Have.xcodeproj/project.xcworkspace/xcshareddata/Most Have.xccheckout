@@ -5,36 +5,36 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>B8A0295D-7161-4C5B-A415-D8C31C206370</string>
+	<string>C3250B9E-9A46-41EB-B3F8-00243374CF1C</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Most Have</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>F39D2F23-95F9-43E1-80C0-5B8853BC3F88</key>
-		<string>ssh://bitbucket.org/paparotnick/mosthave.git</string>
+		<key>4B719D7E-D12B-4F32-9B6F-872304382D6A</key>
+		<string>https://github.com/crimsonjackets/Most-Have</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Most Have.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>F39D2F23-95F9-43E1-80C0-5B8853BC3F88</key>
+		<key>4B719D7E-D12B-4F32-9B6F-872304382D6A</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://bitbucket.org/paparotnick/mosthave.git</string>
+	<string>https://github.com/crimsonjackets/Most-Have</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>F39D2F23-95F9-43E1-80C0-5B8853BC3F88</string>
+	<string>4B719D7E-D12B-4F32-9B6F-872304382D6A</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>F39D2F23-95F9-43E1-80C0-5B8853BC3F88</string>
+			<string>4B719D7E-D12B-4F32-9B6F-872304382D6A</string>
 			<key>IDESourceControlWCCName</key>
-			<string>BridgeSPB</string>
+			<string>Most-Have</string>
 		</dict>
 	</array>
 </dict>
