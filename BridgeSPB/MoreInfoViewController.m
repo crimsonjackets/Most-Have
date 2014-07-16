@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Stas. All rights reserved.
 //
 
+
+
 #import "MoreInfoViewController.h"
 #import "InitSlViewController.h"
 #import "MHBridgeTableViewCell.h"
@@ -27,6 +29,7 @@
     
     CGFloat currentTime;
     
+    
 }
 
 @property NSArray *bridges;
@@ -47,20 +50,37 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    myTimer=[NSTimer scheduledTimerWithTimeInterval:3
+    myTimer=[NSTimer scheduledTimerWithTimeInterval:30
                                              target:self
-                                           selector:@selector(menuShowing)
+                                           selector:@selector(updateProgress)
                                            userInfo:nil
                                             repeats:YES];
-    [self.bridge refreshLoad:NO];
+    [self.bridge refreshLoad:YES];
 }
+
 
 - (void) performInitializations
 {
-    currentTime = 91.0f;//minutes;
-    
+    //currentTime = 91.0f;//minutes;
+    [self updateProgress];
     [self updateBridges];
 }
+
+- (void) updateProgress
+{
+    NSDate *today = [NSDate date];
+    NSCalendar *gregorian = [[NSCalendar alloc]
+                             initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components =
+    [gregorian components:(NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:today];
+    currentTime = [components hour] * 60 + [components minute];
+    NSLog(@"CurrentTime == %f", currentTime);
+    [self.grafic reloadData];
+    
+}
+
+
+
 - (void) updateBridges{
     NSLog(@"Starting updating bridges");
     NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"bridgesInfo"];
@@ -68,6 +88,7 @@
     [self.grafic performSelectorOnMainThread:@selector(reloadData)
                                      withObject:nil
                                   waitUntilDone:NO];
+    [self.bridge refreshLoad:YES];
     NSLog(@"Bridges Updated");
 }
 
@@ -78,7 +99,7 @@
     self.abbrView.hidden=YES;
 
     [self performInitializations];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateBridges) name:@"updateBridges" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateBridges) name:@"updateBridgesInfo" object:nil];
     
     if(([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)&&([UIScreen mainScreen].bounds.size.height == 568.0))
     {
@@ -109,7 +130,7 @@
     [self becomeFirstResponder];
     
     CGRect frame=self.menu.frame;
-    frame.origin.y=self.yMenu+yMenuBot;
+    frame.origin.y=self.yMenu+yMenuBot - 40;
     self.menu.frame=frame;
     
     frame=self.viewWithHelp.frame;
@@ -128,11 +149,11 @@
 //                                           action:@selector(openMenu:)];
 //  //  swipeDown.direction = UISwipeGestureRecognizerDirectionDown;
 //    [self.view addGestureRecognizer:swipeDown];
-    UIPanGestureRecognizer *swipeUp1 = [[UIPanGestureRecognizer alloc]
-                                         initWithTarget:self
-                                         action:@selector(openMenu:)];
+    //UIPanGestureRecognizer *swipeUp1 = [[UIPanGestureRecognizer alloc]
+    //                                     initWithTarget:self
+    //                                     action:@selector(openMenu:)];
   //  swipeUp.direction = UISwipeGestureRecognizerDirectionUp;
-    [self.view addGestureRecognizer:swipeUp1];
+    //[self.view addGestureRecognizer:swipeUp1];
 
     [self.view insertSubview:menu aboveSubview:scroller];
 
@@ -143,11 +164,24 @@
     
     self.grafic.dataSource = self;
     self.grafic.delegate = self;
+    //Table footer
+    CGRect titleRect = CGRectMake(10, 0, 310, 50);
+    UILabel *tableFooter = [[UILabel alloc] initWithFrame:titleRect];
+    tableFooter.textColor = [UIColor grayColor];
+    tableFooter.backgroundColor = [self.grafic backgroundColor];
+    tableFooter.opaque = YES;
+    tableFooter.font = [UIFont boldSystemFontOfSize:11];
+    tableFooter.text = @"Разводка Сампсониевского, Гренадерского, Кантемировского мостов производится с 1.30 ч. до 4.30 ч. по предварительной заявке за 2 суток.";
+    tableFooter.lineBreakMode = NSLineBreakByWordWrapping;
+    tableFooter.numberOfLines = 4;
+    self.grafic.tableFooterView = tableFooter;
+    [self.grafic reloadData];
+    
  //   NSLog(@"%@",self.grafic.image);
     
     frame=grafic.frame;
-    frame.size.height+=yMenuBot;
-    //frame.size.width=320;
+    frame.size.height+=yMenuBot- 70;
+    frame.size.width=320;
     grafic.frame=frame;
 
     
@@ -337,23 +371,28 @@
         
         
         frame.origin.y=60;
+        frame.size.height+=80;
         frameAbbr.origin.y=60;
         scroller.frame=frame;
         self.abbrView.frame=frameAbbr;
         [UIView commitAnimations];
         rightImage.image=[UIImage imageNamed:@"butClose.png"];
+        
     }
     else
     {
         
         
         frame.origin.y=140;
+        frame.size.height-=80;
         scroller.frame=frame;
         frameAbbr.origin.y=140;
         scroller.frame=frame;
         self.abbrView.frame=frameAbbr;
         [UIView commitAnimations];
         rightImage.image=[UIImage imageNamed:@"butOpen.png"];
+        
+        
     }
     
         [self.bridge refreshLoad:NO];
@@ -453,6 +492,7 @@
     [self.navigationController.view.layer addAnimation:transition forKey:nil];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
+/*
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     
@@ -479,7 +519,7 @@ if(frame.origin.y!=460+yMenuBot)
     [UIView commitAnimations];
 }
 }
-
+*/
 //определение с ориентацией
 
 - (BOOL)shouldAutorotate {
@@ -510,15 +550,15 @@ if(frame.origin.y!=460+yMenuBot)
         frameScroll.size.width=320;//600
         CGSize sizescroll=self.scroller.contentSize;
         sizescroll.height=300;
-        scroller.contentSize=CGSizeMake(960+diffCont, 300);
+        //scroller.contentSize=CGSizeMake(960+diffCont, 300);
         self.scroller.frame=frameScroll;
-        scroller.contentSize=CGSizeMake(960+diffCont, 300);
+        //scroller.contentSize=CGSizeMake(960+diffCont, 300);
         
         frameScroll=self.grafic.frame;
         
         
         
-        frameScroll.size=CGSizeMake(320, 400+yMenuBot);
+        frameScroll.size=CGSizeMake(320, 360+yMenuBot);
         self.grafic.frame=frameScroll;
         
         
@@ -562,7 +602,7 @@ if(frame.origin.y!=460+yMenuBot)
 {
     //#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return [self.bridges count];
+    return [self.bridges count] - 4;
 }
 
 - (MHBridgeTableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -589,19 +629,20 @@ if(frame.origin.y!=460+yMenuBot)
     if (UIInterfaceOrientationIsPortrait(orientation))
     {
         CGRect frame=cell.timeLine.frame;
-        frame.size=CGSizeMake(280, cell.timeLine.frame.size.height);
+        frame.size=CGSizeMake([UIScreen mainScreen].bounds.size.width - 40, cell.timeLine.frame.size.height);
         cell.timeLine.frame = frame;
     } else {
         CGRect frame=cell.timeLine.frame;
-        frame.size=CGSizeMake(528, cell.timeLine.frame.size.height);
+        frame.size=CGSizeMake([UIScreen mainScreen].bounds.size.height - 40, cell.timeLine.frame.size.height);
         cell.timeLine.frame = frame;
     }
     
     [cell.timeLine setNeedsDisplay];
     [cell.timeLine setBackgroundColor:[UIColor clearColor]];
     UIImage *bridgeImage;
-    if (currentTime > cell.timeLine.bridgeOpen  && currentTime < cell.timeLine.bridgeClose){
+    if (currentTime >= cell.timeLine.bridgeOpen  && currentTime <= cell.timeLine.bridgeClose){
         //bridge is opened now;
+        NSLog(@"OPEN! ITS OPEN!");
         bridgeImage = [UIImage imageNamed:@"bridge_icon_black0"];
         [cell setBackgroundColor:[UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.03]];
         //[cell.timeLine setBackgroundColor:[UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.2]];
@@ -614,7 +655,7 @@ if(frame.origin.y!=460+yMenuBot)
         
     }
     if (cell.timeLine.bridgeIsOpenedTwoTimes) {
-        if (currentTime > cell.timeLine.bridgeOpen2  && currentTime < cell.timeLine.bridgeClose2){
+        if (currentTime >= cell.timeLine.bridgeOpen2  && currentTime <= cell.timeLine.bridgeClose2){
             //bridge is opened now;
             [cell setBackgroundColor:[UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.03]];
             //[cell.timeLine setBackgroundColor:[UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.2]];
@@ -641,19 +682,7 @@ if(frame.origin.y!=460+yMenuBot)
     headerView.backgroundColor = [UIColor whiteColor];
     headerView.alpha = 0.8f;
     [headerView setProgress: currentTime];
-    /*
-    UIInterfaceOrientation orientation = [UIApplication
-                                          sharedApplication].statusBarOrientation;
-    if (UIInterfaceOrientationIsPortrait(orientation))
-    {
-        CGRect frame=headerView.frame;
-        frame.size=CGSizeMake(280, headerView.frame.size.height);
-        headerView.frame = frame;
-    } else {
-        CGRect frame=headerView.frame;
-        frame.size=CGSizeMake(528, headerView.frame.size.height);
-        headerView.frame = frame;
-    }*/
+   
     
     return headerView;
 }
@@ -661,5 +690,7 @@ if(frame.origin.y!=460+yMenuBot)
 {
     return 20.0f;
 }
+
+
 
 @end

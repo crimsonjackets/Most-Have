@@ -37,6 +37,12 @@
     time.hourClose=hourCl;
     return time;
 }
++(Mytime*)MAkeTimeWIthOpenTime:(NSInteger) openTime andCloseTime:(NSInteger) closeTime
+{
+    return [self MakeTimeWithHourOP:closeTime / 60 minOP: closeTime % 60 hourCl:openTime / 60 minCl:openTime % 60];
+}
+
+
 
 -(void) encodeWithCoder:(NSCoder *)aCoder{
 

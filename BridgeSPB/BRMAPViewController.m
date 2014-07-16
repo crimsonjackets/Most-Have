@@ -68,21 +68,21 @@
     
     
     
-    CGRect frame=menu.frame;
-    frame.origin.y+=yMenuBot;
-    menu.frame=frame;
+    //CGRect frame=menu.frame;
+    //frame.origin.y+=yMenuBot;
+    //menu.frame=frame;
     
-    frame=self.goToCur.frame;
-    frame.origin.y+=yMenuBot;
-    self.goToCur.frame=frame;
+    //frame=self.goToCur.frame;
+    //frame.origin.y+=yMenuBot;
+    //self.goToCur.frame=frame;
     
-    frame=map.frame;
-    frame.size.height+=yMenuBot;
-    map.frame=frame;
+    //frame=map.frame;
+    //frame.size.height+=yMenuBot;
+    //map.frame=frame;
     
-    frame=viewInfoMap.frame;
-    frame.origin.y+=yMenuBot;
-    viewInfoMap.frame=frame;
+    //frame=viewInfoMap.frame;
+    //frame.origin.y+=yMenuBot;
+    //viewInfoMap.frame=frame;
 
     [self.view insertSubview:menu aboveSubview:viewInfoMap];
     

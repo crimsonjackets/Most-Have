@@ -189,11 +189,11 @@
          else if ([data length] == 0 &&
                   error == nil){
              NSLog(@"Nothing was downloaded.");
-             [self updateBridgeTable];
+             [self updateBridgesInfo];
          }
          else if (error != nil){
              NSLog(@"Error happened = %@", error);
-             [self updateBridgeTable];
+             [self updateBridgesInfo];
          }
      }];
 }
@@ -204,18 +204,18 @@
     // !!!read from file
     NSMutableArray *bridges = [NSMutableArray arrayWithObjects:
                                [[MHBridgeInfo alloc ]initOnlyWithName:@"Благовещенский"],
-                               [[MHBridgeInfo alloc ]initOnlyWithName:@"Тучков"],
                                [[MHBridgeInfo alloc ]initOnlyWithName:@"Дворцовый"],
                                [[MHBridgeInfo alloc ]initOnlyWithName:@"Биржевой"],
+                               [[MHBridgeInfo alloc ]initOnlyWithName:@"Тучков"],
                                [[MHBridgeInfo alloc ]initOnlyWithName:@"Троицкий"],
                                [[MHBridgeInfo alloc ]initOnlyWithName:@"Литейный"],
                                [[MHBridgeInfo alloc ]initOnlyWithName:@"Большеохтинский"],
                                [[MHBridgeInfo alloc ]initOnlyWithName:@"Ал.Невского"],
                                [[MHBridgeInfo alloc ]initOnlyWithName:@"Володарский"],
                                [[MHBridgeInfo alloc ]initOnlyWithName:@"Финляндский"],
-                               [[MHBridgeInfo alloc ]initOnlyWithName:@"Кантемировский"],
-                               [[MHBridgeInfo alloc ]initOnlyWithName:@"Гренадерский"],
                                [[MHBridgeInfo alloc ]initOnlyWithName:@"Сампсониевский"],
+                               [[MHBridgeInfo alloc ]initOnlyWithName:@"Гренадерский"],
+                               [[MHBridgeInfo alloc ]initOnlyWithName:@"Кантемировский"],
                                nil];
     //searching information in html for each bridge
     
@@ -233,6 +233,7 @@
             ((MHBridgeInfo *)bridges[i]).openTime = hour * 60 + min1 * 10 + min2;
             NSLog(@"open time = %f", ((MHBridgeInfo *)bridges[i]).openTime);
         } else {
+            NSLog(@"!!!Bridge name = %@",((MHBridgeInfo *)bridges[i]).name);
             noError = NO;
             break;
         }
@@ -245,6 +246,7 @@
             ((MHBridgeInfo *)bridges[i]).closeTime = hour * 60 + min1 * 10 + min2;
             NSLog(@"close time = %f", ((MHBridgeInfo *)bridges[i]).closeTime);
         } else {
+            NSLog(@"!!!Bridge name = %@",((MHBridgeInfo *)bridges[i]).name);
             noError = NO;
             break;
         }
@@ -289,6 +291,7 @@
             NSLog(@"open time = %f", ((MHBridgeInfo *)bridges[i]).openTime);
         }
     } else {
+        NSLog(@"!!!Bridge name = %@",((MHBridgeInfo *)bridges[11]).name);
         noError = NO;
     }
     hour = [html characterAtIndex:(range.location + range.length + 11)] - 48;
@@ -300,6 +303,7 @@
             NSLog(@"close time = %f", ((MHBridgeInfo *)bridges[i]).closeTime);
         }
     } else {
+        NSLog(@"!!!Bridge name = %@",((MHBridgeInfo *)bridges[11]).name);
         noError = NO;
     }
     
@@ -323,7 +327,7 @@
         [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"bridgesInfo"];
         
     }
-    [self updateBridgeTable];
+    [self updateBridgesInfo];
     /*
      else {
      NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"bridgesInfo"];
@@ -353,12 +357,12 @@
         NSMutableArray *bridges = [NSMutableArray arrayWithObjects:
                                    [[MHBridgeInfo alloc ]initWithName:@"Благовещенский" andOpenTime: 85.0 andCloseTime: 165.0 andIsOpenedTwoTimes: YES
                                                    andOpenTime2: 190.0 andCloseTime2: 300.0],
-                                   [[MHBridgeInfo alloc ]initWithName:@"Тучков" andOpenTime: 120.0 andCloseTime: 175.0 andIsOpenedTwoTimes: YES
-                                                   andOpenTime2: 215.0 andCloseTime2: 295.0],
                                    [[MHBridgeInfo alloc ]initWithName:@"Дворцовый" andOpenTime: 85.0 andCloseTime: 170.0 andIsOpenedTwoTimes: YES
-                                                   andOpenTime2: 190.0 andCloseTime2: 295.0],
+                                                         andOpenTime2: 190.0 andCloseTime2: 295.0],
                                    [[MHBridgeInfo alloc ]initWithName:@"Биржевой" andOpenTime: 120.0 andCloseTime: 295.0 andIsOpenedTwoTimes: NO
-                                                   andOpenTime2: 0.0 andCloseTime2: 0.0],
+                                                         andOpenTime2: 0.0 andCloseTime2: 0.0],
+                                   [[MHBridgeInfo alloc ]initWithName:@"Тучков" andOpenTime: 120.0 andCloseTime: 175.0 andIsOpenedTwoTimes: YES
+                                                         andOpenTime2: 215.0 andCloseTime2: 295.0],
                                    [[MHBridgeInfo alloc ]initWithName:@"Троицкий" andOpenTime: 95.0 andCloseTime: 290.0 andIsOpenedTwoTimes: NO
                                                    andOpenTime2: 0.0 andCloseTime2: 0.0],
                                    [[MHBridgeInfo alloc ]initWithName:@"Литейный" andOpenTime: 100.0 andCloseTime: 295.0 andIsOpenedTwoTimes: NO
@@ -369,14 +373,15 @@
                                                    andOpenTime2: 0.0 andCloseTime2: 0.0],
                                    [[MHBridgeInfo alloc ]initWithName:@"Володарский" andOpenTime: 120.0 andCloseTime: 225.0 andIsOpenedTwoTimes: YES
                                                    andOpenTime2: 255.0 andCloseTime2: 345.0],
+                                   
                                    [[MHBridgeInfo alloc ]initWithName:@"Финляндский" andOpenTime: 140.0 andCloseTime: 330.0 andIsOpenedTwoTimes: NO
-                                                   andOpenTime2: 0.0 andCloseTime2: 0.0],
-                                   [[MHBridgeInfo alloc ]initWithName:@"Кантемировский" andOpenTime: 90.0 andCloseTime: 270.0 andIsOpenedTwoTimes: NO
-                                                   andOpenTime2: 0.0 andCloseTime2: 0.0],
+                                                         andOpenTime2: 0.0 andCloseTime2: 0.0],
+                                   [[MHBridgeInfo alloc ]initWithName:@"Сампсониевский" andOpenTime: 90.0 andCloseTime: 270.0 andIsOpenedTwoTimes: NO
+                                                         andOpenTime2: 0.0 andCloseTime2: 0.0],
                                    [[MHBridgeInfo alloc ]initWithName:@"Гренадерский" andOpenTime: 90.0 andCloseTime: 270.0 andIsOpenedTwoTimes: NO
                                                    andOpenTime2: 0.0 andCloseTime2: 0.0],
-                                   [[MHBridgeInfo alloc ]initWithName:@"Сампсониевский" andOpenTime: 90.0 andCloseTime: 270.0 andIsOpenedTwoTimes: NO
-                                                   andOpenTime2: 0.0 andCloseTime2: 0.0],
+                                   [[MHBridgeInfo alloc ]initWithName:@"Кантемировский" andOpenTime: 90.0 andCloseTime: 270.0 andIsOpenedTwoTimes: NO
+                                                         andOpenTime2: 0.0 andCloseTime2: 0.0],
                                    nil];
         //store bridges
         NSData *data = [NSKeyedArchiver archivedDataWithRootObject:bridges];
@@ -385,9 +390,10 @@
         NSLog(@"Bridges initialized and stored");
     }
 }
-- (void) updateBridgeTable
+- (void) updateBridgesInfo
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateBridges" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateBridgesInfo" object:nil];
+    
 }
 
 @end

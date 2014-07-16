@@ -9,6 +9,8 @@
 #import "Bridge.h"
 #import "OneBridge.h"
 #import "time.h"
+#import "MHBridgeInfo.h"
+
 @implementation Bridge
 @synthesize locBridges;
 //@synthesize bridgesScrollView;
@@ -45,10 +47,20 @@
     NSArray * time2= times[1];
     NSArray * coords = [allDict objectForKey:@"coords"];
     NSArray * points = [allDict objectForKey:@"points"];
-
+    
+    //Новые данные
+    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"bridgesInfo"];
+    NSArray *newBridgesInfo = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    //Массив, отображающий индексы старых данных на индексы новых
+    int indexInNew[13] = {0, 1, 4, 5, 6, 7, 8, 3, 2, 10, 11, 12, 9};
+    
+    
     //заполнение мостов данными
     for(int i=0;i<13;i++)
     {
+        
+        
+        
         UIImage* image=[UIImage imageNamed:@"bridge_icon_black1.png"];
 
         OneBridge * bridge=[[OneBridge alloc]initWithFrame:CGRectMake([[points objectAtIndex:i] CGPointValue].x, [[points objectAtIndex:i] CGPointValue].y, 50, 17) ];
@@ -57,8 +69,20 @@
         bridge.statys=YES;
         bridge.name=[names objectForKey:[NSNumber numberWithInt:i]];
         bridge.location=[[points objectAtIndex:i] CGPointValue];
-        Mytime * timeFirst=[time1 objectAtIndex:i];
-        Mytime * timeSecond=[time2 objectAtIndex:i];
+        Mytime * timeFirst=[Mytime MAkeTimeWIthOpenTime:((MHBridgeInfo *)newBridgesInfo[indexInNew[i]]).openTime andCloseTime:((MHBridgeInfo *)newBridgesInfo[indexInNew[i]]).closeTime];//[time1 objectAtIndex:i];
+        Mytime * timeSecond;
+        if (((MHBridgeInfo *)newBridgesInfo[indexInNew[i]]).isOpenedTwoTimes){
+            timeSecond=[Mytime MAkeTimeWIthOpenTime:((MHBridgeInfo *)newBridgesInfo[indexInNew[i]]).openTime2 andCloseTime:((MHBridgeInfo *)newBridgesInfo[indexInNew[i]]).closeTime2];//[time2 objectAtIndex:i];
+        }else {
+            timeSecond=[Mytime MAkeTimeWIthOpenTime:((MHBridgeInfo *)newBridgesInfo[indexInNew[i]]).openTime andCloseTime:((MHBridgeInfo *)newBridgesInfo[indexInNew[i]]).closeTime];//[time2 objectAtIndex:i];
+        }
+        
+        NSLog(@"Bridge.name == %@", bridge.name);
+        NSLog(@"TimeFirst.hourOpen = %d", timeFirst.hourOpen);
+        NSLog(@"TimeFirst.minuteOpen = %d", timeFirst.minOpen);
+        NSLog(@"TimeFirst.hourClose = %d", timeFirst.hourClose);
+        NSLog(@"TimeFirst.minuteClose = %d", timeFirst.minClose);
+        
         bridge.time1=timeFirst;
         bridge.time2=timeSecond;
         bridge.coord=[[coords objectAtIndex:i] CGPointValue];
@@ -104,8 +128,16 @@
     mybridge.info.layer.borderColor=[[UIColor colorWithRed:51.0f/255 green:255.0f/255 blue:254.0f/255 alpha:1] CGColor];
     mybridge.info.layer.borderWidth=2;
     
+    
+    
+    
+    
+    
     return mybridge;
 }
+
+
+
 
 //создание базы данных по всем мостам
 -(NSDictionary*)createArrays
@@ -724,6 +756,12 @@ else
     
     NSArray * time1 =times[0];
     
+    //Новые данные
+    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"bridgesInfo"];
+    NSArray *newBridgesInfo = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    //Массив, отображающий индексы старых данных на индексы новых
+    int indexInNew[13] = {0, 1, 4, 5, 6, 7, 8, 3, 2, 10, 11, 12, 9};
+    
     for(int i=0;i<10;i++)
     {
         
@@ -735,8 +773,13 @@ else
         else{
             bridge.image=[UIImage imageNamed:@"bridge_icon_black0.png"];
         }
-        Mytime * timeFirst=[time1 objectAtIndex:i];
-        Mytime * timeSecond=[time2 objectAtIndex:i];
+        Mytime * timeFirst=[Mytime MAkeTimeWIthOpenTime:((MHBridgeInfo *)newBridgesInfo[indexInNew[i]]).openTime andCloseTime:((MHBridgeInfo *)newBridgesInfo[indexInNew[i]]).closeTime];//[time1 objectAtIndex:i];
+        Mytime * timeSecond;
+        if (((MHBridgeInfo *)newBridgesInfo[indexInNew[i]]).isOpenedTwoTimes){
+            timeSecond=[Mytime MAkeTimeWIthOpenTime:((MHBridgeInfo *)newBridgesInfo[indexInNew[i]]).openTime2 andCloseTime:((MHBridgeInfo *)newBridgesInfo[indexInNew[i]]).closeTime2];//[time2 objectAtIndex:i];
+        }else {
+            timeSecond=[Mytime MAkeTimeWIthOpenTime:((MHBridgeInfo *)newBridgesInfo[indexInNew[i]]).openTime andCloseTime:((MHBridgeInfo *)newBridgesInfo[indexInNew[i]]).closeTime];//[time2 objectAtIndex:i];
+        }
         bridge.time1=timeFirst;
         bridge.time2=timeSecond;
         if(timeFirst.hourOpen==timeSecond.hourOpen)

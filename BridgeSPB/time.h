@@ -20,4 +20,6 @@
 @property (nonatomic,strong) NSString * minClS;
 
 +(Mytime*)MakeTimeWithHourOP:(NSInteger)hourOP minOP:(NSInteger)minOP hourCl:(NSInteger)hourCl minCl:(NSInteger)minCL;
++(Mytime*)MAkeTimeWIthOpenTime:(NSInteger) openTime andCloseTime:(NSInteger) closeTime;
+
 @end
