@@ -98,30 +98,6 @@
     CGFloat bridgeOpenPointX = (timeOpen - self.start) / (self.end - self.start) * lineLength + self.lineX; //points
     CGFloat bridgeClosePointX = (timeClose - self.start) / (self.end - self.start) * lineLength + self.lineX; //points
     
-    if ([self.state  isEqualToString: @"big"]){
-        bridgeOpenPointX =  (70 - self.start) / (self.end - self.start) * lineLength + self.lineX; //points
-        bridgeClosePointX = (320 - self.start) / (self.end - self.start) * lineLength + self.lineX; //points
-    }
-    
-    if ([self.state  isEqualToString: @"leftBig"]){
-        if (isLeftSection){
-            bridgeOpenPointX =  (70 - self.start) / (self.end - self.start) * lineLength + self.lineX; //points
-            bridgeClosePointX = (200 - self.start) / (self.end - self.start) * lineLength + self.lineX; //points
-        } else {
-            bridgeOpenPointX =  (270 - self.start) / (self.end - self.start) * lineLength + self.lineX; //points
-            bridgeClosePointX = (330 - self.start) / (self.end - self.start) * lineLength + self.lineX; //points
-        }
-    }
-    if ([self.state  isEqualToString: @"rightBig"]){
-        if (isLeftSection){
-            bridgeOpenPointX =  (70 - self.start) / (self.end - self.start) * lineLength + self.lineX; //points
-            bridgeClosePointX = (120 - self.start) / (self.end - self.start) * lineLength + self.lineX; //points
-        } else {
-            bridgeOpenPointX =  (170 - self.start) / (self.end - self.start) * lineLength + self.lineX; //points
-            bridgeClosePointX = (320 - self.start) / (self.end - self.start) * lineLength + self.lineX; //points
-        }
-    }
-    
     //line while open
     CGContextSetLineWidth(context, lineWidth);
     CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
@@ -139,7 +115,7 @@
     
     // Open bridge symbol
     CGContextSetLineWidth(context, lineWidth);
-    if (self.progress  > timeOpen){
+    if (self.progress  >= timeOpen && self.progress < 360 && self.progress > 60){
         CGContextSetStrokeColorWithColor(context, [UIColor grayColor].CGColor);
     } else {
         CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
@@ -151,7 +127,7 @@
     
     //Close bridge symbol
     CGContextSetLineWidth(context, lineWidth);
-    if (self.progress  > timeClose){
+    if (self.progress  >= timeClose && self.progress < 360 && self.progress > 60){
         CGContextSetStrokeColorWithColor(context, [UIColor grayColor].CGColor);
     } else {
         CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
@@ -169,7 +145,7 @@
     
     //draw open/close times
     //if ([self.state  isEqualToString: @"small"]){
-    if (self.progress > timeOpen){
+    if (self.progress >= timeOpen && self.progress < 360 && self.progress > 60){
         [attributes setValue:[UIColor grayColor] forKey:NSForegroundColorAttributeName];
     } else {
         [attributes setValue:[UIColor blackColor] forKey:NSForegroundColorAttributeName];
@@ -179,7 +155,7 @@
     NSString *openTime = [self makeTimeString: timeOpen];
     [openTime drawAtPoint:CGPointMake(bridgeOpenPointX + openSybmolSize + 1.0f, self.lineY - fontSize - 2.0f) withAttributes: attributes];
     
-    if (self.progress > timeClose){
+    if (self.progress >= timeClose && self.progress < 360 && self.progress > 60){
         [attributes setValue:[UIColor grayColor] forKey:NSForegroundColorAttributeName];
     } else {
         [attributes setValue:[UIColor blackColor] forKey:NSForegroundColorAttributeName];

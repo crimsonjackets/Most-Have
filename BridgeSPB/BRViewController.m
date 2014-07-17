@@ -16,7 +16,7 @@
 #import "MoreInfoViewController.h"
 #import "InitSlViewController.h"
 #import "time.h"
-
+#import "MHBridgeInfo.h"
 
 @interface BRViewController ()
 {   UIImageView * rightImage;
@@ -33,6 +33,8 @@
     UIButton *butForOpenTimers;
     NSInteger newBot;
     UILabel* fourLabel;
+    
+    NSInteger currentTime;
 }
 @end
 
@@ -59,7 +61,8 @@
     
     [self.bridge refreshLoad:YES];
     [self refTimer];
-
+    
+    
     NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
     NSArray *pushMessage;
     if (standardUserDefaults)
@@ -79,6 +82,9 @@
     
     [self becomeFirstResponder];
 }
+
+
+
 
 - (BOOL) isFirstRun
 {
@@ -159,8 +165,7 @@
    [super viewDidLoad];
 
     [self becomeFirstResponder];
-
-
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStuff) name:@"updateBridgesInfo" object:nil];
     indexForInfo=0;
 
 
@@ -297,14 +302,93 @@
 
 -(void)refTimer
 {
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSInteger index=[self.bridge beforeAfterwithCalendar:calendar];
     
-
+    NSDate *today = [NSDate date];
+    NSCalendar *gregorian = [[NSCalendar alloc]
+                             initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components =
+    [gregorian components:(NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:today];
+    currentTime = [components hour] * 60 + [components minute];
+    NSLog(@"refTimer; currentTime == %d", currentTime);
+    BOOL atLeastOneIsOpened = NO;
+    BOOL noClosedBridgesToVO = NO;
+    BOOL allBridgesAreOpened = YES;
+    BOOL atLeastOneOnShortClose = NO;
+    BOOL isMetroOpened = NO;
+    int firstOpenTime = 360;
+    int closedBridgesToVO = 0;
+    //Новые данные
+    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"bridgesInfo"];
+    NSArray *newBridgesInfo = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    //Массив, отображающий индексы старых данных на индексы новых
+    int indexInNew[13] = {0, 1, 4, 5, 6, 7, 8, 3, 2, 10, 11, 12, 9};
+    int openSize = 0, closeSize = 0, shortSize = 0, openedSize = 0, closedSize = 0;
+    int openingSoon[13];//в старых индексах
+    int closingSoon[13];//в старых индексах
+    int shortClosed[13];
+    int openedNow[13];
+    int closedNow[13];
+    //просчитываем текущую ситуацию и выставляем флаги(BOOL)
+    for (int i = 0; i < 9; i++){
+        MHBridgeInfo *currBridgeInfo = newBridgesInfo[indexInNew[i]];
+        if (firstOpenTime > currBridgeInfo.openTime){
+            firstOpenTime = currBridgeInfo.openTime;
+        }
+        if (currentTime >= currBridgeInfo.openTime - 30 && currentTime < currBridgeInfo.openTime){
+            //opening soon;
+            openingSoon[openSize++] = i;
+        }
+        if (currentTime >= currBridgeInfo.closeTime - 30 && currentTime < currBridgeInfo.closeTime){
+            //closing soon;
+            closingSoon[closeSize++] = i;
+        }
+        if (currentTime >= currBridgeInfo.openTime && currentTime <= currBridgeInfo.closeTime){
+            //Bridge is opened;
+            openedNow[openedSize++] = i;
+            atLeastOneIsOpened = YES;
+        } else {
+            //Bridge is closed;
+            closedNow[closedSize++] = i;
+            allBridgesAreOpened = NO;
+            if (i < 4){
+                //bridge to VO
+                closedBridgesToVO++;
+            }
+        }
+        if (currBridgeInfo.isOpenedTwoTimes){
+            if (currentTime >= currBridgeInfo.openTime2 - 30 && currentTime < currBridgeInfo.openTime2){
+                //opening soon;
+                openingSoon[openSize++] = i;
+            }
+            if (currentTime >= currBridgeInfo.closeTime2 - 30 && currentTime < currBridgeInfo.closeTime2){
+                //closing soon;
+                closingSoon[closeSize++] = i;
+            }
+            if (currentTime >= currBridgeInfo.openTime2 && currentTime <= currBridgeInfo.closeTime2){
+                //Bridge is opened;
+                openedNow[openedSize++] = i;
+                closedSize--;
+                atLeastOneIsOpened = YES;
+                if (i < 4){
+                    //bridge to VO
+                    closedBridgesToVO--;
+                }
+            }
+            if (currentTime > currBridgeInfo.closeTime && currentTime < currBridgeInfo.openTime2){
+                //Closed on a short time;
+                shortClosed[shortSize++] = i;
+                atLeastOneOnShortClose = YES;
+                allBridgesAreOpened = NO;
+            }
+        }
+        
+    }
+    noClosedBridgesToVO = (closedBridgesToVO == 0);
+    allBridgesAreOpened = (openedSize == 9);
     
-    
-    if(index<0)
+    if(currentTime < firstOpenTime - 30 || currentTime > 360)
     {
+        // NO INFO. ALL IS OK
         CGRect frameLabels=viewWithLabels.frame;
 
         self.viewWithTimer.hidden=YES;
@@ -335,6 +419,105 @@
     }
     else
     {
+        if (allBridgesAreOpened){
+            //все мосты разведены
+            CGRect frameLabels=viewWithLabels.frame;
+            
+            self.viewWithTimer.hidden=YES;
+            self.beforeAfter.hidden=YES;
+            // butForOpenTimers.hidden=YES;
+            self.twoView.hidden=YES;
+            self.twoLabelbefor.hidden=YES;
+            frameLabels=self.viewWithLabels.frame;
+            // frameLabels.origin.y+=newBot/2;
+            if (newBot==0) {
+                //frameLabels.origin.y+=20;
+            }
+            self.viewWithLabels.frame=frameLabels;
+            NSArray* titleInfo=[NSArray arrayWithObjects:@"РОМАНТИКА",
+                                @"БЕЛЫХ НОЧЕЙ",
+                                @"ВО ВСЕЙ КРАСЕ",
+                                nil];
+            NSString * new=[[titleInfo objectAtIndex:0] uppercaseString];
+            self.firstLabelInfo.text=new;
+            new=[[titleInfo objectAtIndex:1] uppercaseString];
+            
+            self.shakeLabel.text=[[titleInfo objectAtIndex:1]uppercaseString];
+            new=[[titleInfo objectAtIndex:2] uppercaseString];
+            
+            self.lastLabelInfo.text=[[titleInfo objectAtIndex:2]uppercaseString];
+            
+            fourLabel.hidden=YES;
+            
+            return;
+        }
+        if (atLeastOneOnShortClose){
+            //Есть короткая сводка
+            CGRect frameLabels=viewWithLabels.frame;
+            
+            self.viewWithTimer.hidden=YES;
+            self.beforeAfter.hidden=YES;
+            // butForOpenTimers.hidden=YES;
+            self.twoView.hidden=YES;
+            self.twoLabelbefor.hidden=YES;
+            frameLabels=self.viewWithLabels.frame;
+            // frameLabels.origin.y+=newBot/2;
+            if (newBot==0) {
+                //frameLabels.origin.y+=20;
+            }
+            self.viewWithLabels.frame=frameLabels;
+            NSArray* titleInfo=[NSArray arrayWithObjects:@"ВРЕМЯ",
+                                @"КОРОТКОЙ",
+                                @"СВОДКИ",
+                                nil];
+            NSString * new=[[titleInfo objectAtIndex:0] uppercaseString];
+            self.firstLabelInfo.text=new;
+            new=[[titleInfo objectAtIndex:1] uppercaseString];
+            
+            self.shakeLabel.text=[[titleInfo objectAtIndex:1]uppercaseString];
+            new=[[titleInfo objectAtIndex:2] uppercaseString];
+            
+            self.lastLabelInfo.text=[[titleInfo objectAtIndex:2]uppercaseString];
+            
+            fourLabel.hidden=YES;
+            
+            return;
+        }
+        
+        if (noClosedBridgesToVO){
+            //На Ваську не проехать
+            CGRect frameLabels=viewWithLabels.frame;
+            
+            self.viewWithTimer.hidden=YES;
+            self.beforeAfter.hidden=YES;
+            // butForOpenTimers.hidden=YES;
+            self.twoView.hidden=YES;
+            self.twoLabelbefor.hidden=YES;
+            frameLabels=self.viewWithLabels.frame;
+            // frameLabels.origin.y+=newBot/2;
+            if (newBot==0) {
+                //frameLabels.origin.y+=20;
+            }
+            self.viewWithLabels.frame=frameLabels;
+            NSArray* titleInfo=[NSArray arrayWithObjects:@"ЧАС РОМАНТИКИ",
+                                @"НА ВАСИЛЬЕВСКОМ",
+                                @"ОСТРОВЕ",
+                                nil];
+            NSString * new=[[titleInfo objectAtIndex:0] uppercaseString];
+            self.firstLabelInfo.text=new;
+            new=[[titleInfo objectAtIndex:1] uppercaseString];
+            
+            self.shakeLabel.text=[[titleInfo objectAtIndex:1]uppercaseString];
+            new=[[titleInfo objectAtIndex:2] uppercaseString];
+            
+            self.lastLabelInfo.text=[[titleInfo objectAtIndex:2]uppercaseString];
+            
+            fourLabel.hidden=YES;
+            
+            return;
+        }
+        
+        /*
         fourLabel.hidden=YES;
             NSArray* titleInfo=[self.bridge getInfoTitlewithCalendar:calendar];
             NSString * new=[[titleInfo objectAtIndex:0] uppercaseString];
@@ -418,7 +601,7 @@
             }
             }
         if(self.viewWithTimer.frame.size.height>25)
-            [self addLabel];
+            [self addLabel]; */
     }
     
 }
