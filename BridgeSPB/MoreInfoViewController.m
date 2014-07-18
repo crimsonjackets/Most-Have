@@ -50,7 +50,7 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    myTimer=[NSTimer scheduledTimerWithTimeInterval:30
+    myTimer=[NSTimer scheduledTimerWithTimeInterval:10
                                              target:self
                                            selector:@selector(updateProgress)
                                            userInfo:nil
@@ -58,6 +58,10 @@
     [self.bridge refreshLoad:YES];
 }
 
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [myTimer invalidate];
+}
 
 - (void) performInitializations
 {

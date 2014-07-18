@@ -21,25 +21,25 @@
                                         <rect key="frame" x="0.0" y="0.0" width="321" height="500"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" id="y8A-fp-BFX">
-                                                <rect key="frame" x="0.0" y="5" width="321" height="499.99999338641555"/>
+                                                <rect key="frame" x="0.0" y="5" width="321" height="500.00000528219653"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="ARE CLOSED" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="rzh-Wr-wrG">
-                                                        <rect key="frame" x="16" y="81" width="285" height="49.000000587629707"/>
+                                                        <rect key="frame" x="16" y="81" width="285" height="49.000016919905384"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
                                                         <color key="textColor" red="0.0" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="KEEP CALM" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="0fh-T4-2jD">
-                                                        <rect key="frame" x="12" y="46" width="296" height="42.999996804672669"/>
+                                                        <rect key="frame" x="12" y="46" width="296" height="43.000002552072345"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
                                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="APRIL" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="ZHo-eB-SfB">
-                                                        <rect key="frame" x="18" y="121" width="285" height="44.999993386415582"/>
+                                                        <rect key="frame" x="18" y="121" width="285" height="45.000005282196526"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
                                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>

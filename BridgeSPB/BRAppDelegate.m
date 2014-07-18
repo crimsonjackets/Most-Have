@@ -392,8 +392,9 @@
 }
 - (void) updateBridgesInfo
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateBridgesInfo" object:nil];
-    
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateBridgesInfo" object:nil];
+    });
 }
 
 @end
