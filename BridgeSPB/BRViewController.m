@@ -17,6 +17,7 @@
 #import "InitSlViewController.h"
 #import "time.h"
 #import "MHBridgeInfo.h"
+#import <CoreLocation/CoreLocation.h>
 
 @interface BRViewController ()
 {   UIImageView * rightImage;
@@ -25,6 +26,7 @@
     NSTimer *myTimer;
     UIButton * menuButton;
     NSTimer *myTimer2;
+    NSTimer *myTimerForRef;
     int indexForInfo;
     NSArray *rangeForInfo;
     NSArray* mostWithTimer;
@@ -33,8 +35,10 @@
     UIButton *butForOpenTimers;
     NSInteger newBot;
     UILabel* fourLabel;
-    
+    CLLocationManager *locationManager;
     NSInteger currentTime;
+    
+    
 }
 @end
 
@@ -50,6 +54,11 @@
 @synthesize twoView;
 
 
+
+
+
+
+
 - (void)viewDidAppear:(BOOL)animated {
     
     if (![self.slidingViewController.underLeftViewController isKindOfClass:[MenuViewController class]]) {
@@ -61,7 +70,11 @@
     
     [self.bridge refreshLoad:YES];
     [self refTimer];
-    
+    myTimerForRef =[NSTimer scheduledTimerWithTimeInterval:10
+                                             target:self
+                                           selector:@selector(refTimer)
+                                           userInfo:nil
+                                            repeats:YES];
     
     NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
     NSArray *pushMessage;
@@ -81,7 +94,9 @@
 - (void)viewDidDisappear:(BOOL)animated {
     
     [self becomeFirstResponder];
+    [myTimerForRef invalidate];
 }
+
 
 
 
@@ -167,7 +182,9 @@
     [self becomeFirstResponder];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStuff) name:@"updateBridgesInfo" object:nil];
     indexForInfo=0;
-
+    
+    locationManager = [[CLLocationManager alloc] init];
+    [locationManager startUpdatingLocation];
 
     self.twoView.hidden=YES;
     self.twoLabelbefor.hidden=YES;
@@ -212,7 +229,8 @@
     {
         newBot=30;
         yMenuBot=510;
-        frameLabels.origin.y+=75;
+        frameLabels.origin.y+=15;
+        NSLog(@"viewWithLabels.frame inition");
         self.viewWithLabels.frame=frameLabels;
     }
     else
@@ -253,9 +271,12 @@
         frameLabels.origin.y+=350+(yMenuBot-419)/2;
         viewWithLabels.frame=frameLabels;
         frameLabels.origin.y-=350+(yMenuBot-419)/2+newBot;
+        frameLabels.origin.y -= 30;
+        NSLog(@"viewWithLabels.frame firstRun");
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:2];
-            
+        
+        
         viewWithLabels.frame=frameLabels;
         [UIView commitAnimations];
         
@@ -315,6 +336,7 @@
     BOOL allBridgesAreOpened = YES;
     BOOL atLeastOneOnShortClose = NO;
     BOOL isMetroOpened = NO;
+    BOOL isAtLeastOneIsOpeningSoon = NO;
     int firstOpenTime = 360;
     int closedBridgesToVO = 0;
     //Новые данные
@@ -324,7 +346,9 @@
     int indexInNew[13] = {0, 1, 4, 5, 6, 7, 8, 3, 2, 10, 11, 12, 9};
     int openSize = 0, closeSize = 0, shortSize = 0, openedSize = 0, closedSize = 0;
     int openingSoon[13];//в старых индексах
+    int openingSoonTime[13];
     int closingSoon[13];//в старых индексах
+    int closingSoonTime[13];
     int shortClosed[13];
     int openedNow[13];
     int closedNow[13];
@@ -336,10 +360,13 @@
         }
         if (currentTime >= currBridgeInfo.openTime - 30 && currentTime < currBridgeInfo.openTime){
             //opening soon;
-            openingSoon[openSize++] = i;
+            openingSoon[openSize] = i;
+            openingSoonTime[openSize++] = currBridgeInfo.openTime;
+            isAtLeastOneIsOpeningSoon = YES;
         }
         if (currentTime >= currBridgeInfo.closeTime - 30 && currentTime < currBridgeInfo.closeTime){
             //closing soon;
+            closingSoonTime[closeSize] = currBridgeInfo.closeTime;
             closingSoon[closeSize++] = i;
         }
         if (currentTime >= currBridgeInfo.openTime && currentTime <= currBridgeInfo.closeTime){
@@ -350,7 +377,7 @@
             //Bridge is closed;
             closedNow[closedSize++] = i;
             allBridgesAreOpened = NO;
-            if (i < 4){
+            if (indexInNew[i] < 4){
                 //bridge to VO
                 closedBridgesToVO++;
             }
@@ -358,10 +385,12 @@
         if (currBridgeInfo.isOpenedTwoTimes){
             if (currentTime >= currBridgeInfo.openTime2 - 30 && currentTime < currBridgeInfo.openTime2){
                 //opening soon;
-                openingSoon[openSize++] = i;
+                openingSoon[openSize] = i;
+                openingSoonTime[openSize++] = currBridgeInfo.openTime2;
             }
             if (currentTime >= currBridgeInfo.closeTime2 - 30 && currentTime < currBridgeInfo.closeTime2){
                 //closing soon;
+                closingSoonTime[closeSize] = currBridgeInfo.closeTime2;
                 closingSoon[closeSize++] = i;
             }
             if (currentTime >= currBridgeInfo.openTime2 && currentTime <= currBridgeInfo.closeTime2){
@@ -369,7 +398,7 @@
                 openedNow[openedSize++] = i;
                 closedSize--;
                 atLeastOneIsOpened = YES;
-                if (i < 4){
+                if (indexInNew[i] < 4){
                     //bridge to VO
                     closedBridgesToVO--;
                 }
@@ -386,22 +415,82 @@
     noClosedBridgesToVO = (closedBridgesToVO == 0);
     allBridgesAreOpened = (openedSize == 9);
     
+    
+    //Sorting openingSoon and closingSoon relative to current user position
+
+    CLLocation *loc = [[CLLocation alloc] initWithLatitude:locationManager.location.coordinate.latitude longitude:locationManager.location.coordinate.longitude];
+    //CLLocation *loc = [[CLLocation alloc] initWithLatitude:59.944443 longitude:30.295358];
+    NSLog(@"Current location: %@",loc);
+    
+    if (loc.coordinate.longitude > 1e-5 && loc.coordinate.latitude > 1e-5){
+    for(int i = 0; i < openSize; i++)
+    {
+        for(int j = 0; j < openSize - 1; j++)
+        {
+            int n1 = openingSoon[j];
+            int n2 = openingSoon[j + 1];
+            OneBridge *bridge1=[self.bridge.bridges objectForKey:[NSNumber numberWithInt:n1]];
+            OneBridge *bridge2=[self.bridge.bridges objectForKey:[NSNumber numberWithInt:n2]];
+            CLLocation *loc1 = [[CLLocation alloc] initWithLatitude:bridge1.coord.x longitude:bridge1.coord.y ];
+            CLLocation *loc2 = [[CLLocation alloc] initWithLatitude:bridge2.coord.x longitude:bridge2.coord.y ];
+            CLLocationDistance dist1 = [loc distanceFromLocation:loc1];
+            CLLocationDistance dist2 = [loc distanceFromLocation:loc2];
+            //NSLog(@"[Sort] n1 = %d n2 = %d", n1, n2);
+           //NSLog(@"[Sort] Dist ot bridge %@ == %f, MYDIST = %f", bridge1.name, dist1, sqrtf((loc.coordinate.latitude - loc1.coordinate.latitude) * (loc.coordinate.latitude - loc1.coordinate.latitude)
+           //       + (loc.coordinate.longitude - loc1.coordinate.longitude) * (loc.coordinate.longitude - loc1.coordinate.longitude)));
+           // NSLog(@"[Sort] Dist ot bridge %@ == %f", bridge2.name, dist2);
+            
+            if(dist1>dist2)
+            {
+                int c = openingSoon[j];
+                openingSoon[j] = openingSoon[j + 1];
+                openingSoon[j + 1] = c;
+                c = openingSoonTime[j];
+                openingSoonTime[j] = openingSoonTime[j + 1];
+                openingSoonTime[j + 1] = c;
+                
+            }
+        }
+    }
+    for(int i = 0; i < closeSize; i++)
+    {
+        for(int j = 0; j < closeSize - 1; j++)
+        {
+            int n1 = closingSoon[j];
+            int n2 = closingSoon[j + 1];
+            OneBridge *bridge1=[self.bridge.bridges objectForKey:[NSNumber numberWithInt:n1]];
+            OneBridge *bridge2=[self.bridge.bridges objectForKey:[NSNumber numberWithInt:n2]];
+            CLLocation *loc1 = [[CLLocation alloc] initWithLatitude:bridge1.coord.x longitude:bridge1.coord.y ];
+            CLLocation *loc2 = [[CLLocation alloc] initWithLatitude:bridge2.coord.x longitude:bridge2.coord.y ];
+            CLLocationDistance dist1 = [loc distanceFromLocation:loc1];
+            CLLocationDistance dist2 = [loc distanceFromLocation:loc2];
+            
+            if(dist1>dist2)
+            {
+                int c = closingSoon[j];
+                closingSoon[j] = closingSoon[j + 1];
+                closingSoon[j + 1] = c;
+                c = closingSoonTime[j];
+                closingSoonTime[j] = closingSoonTime[j + 1];
+                closingSoonTime[j + 1] = c;
+                
+            }
+        }
+    }
+    }
+    
+    
     if(currentTime < firstOpenTime - 30 || currentTime > 360)
     {
         // NO INFO. ALL IS OK
-        CGRect frameLabels=viewWithLabels.frame;
+        
 
         self.viewWithTimer.hidden=YES;
         self.beforeAfter.hidden=YES;
        // butForOpenTimers.hidden=YES;
         self.twoView.hidden=YES;
         self.twoLabelbefor.hidden=YES;
-        frameLabels=self.viewWithLabels.frame;
-       // frameLabels.origin.y+=newBot/2;
-        if (newBot==0) {
-            //frameLabels.origin.y+=20;
-        }
-        self.viewWithLabels.frame=frameLabels;
+        
         NSArray* titleInfo=[NSArray arrayWithObjects:@"ВСЕ МОСТЫ",
                             @"СВЕДЕНЫ",
                             @"ХОРОШЕГО",
@@ -419,21 +508,172 @@
     }
     else
     {
+        //deleting old labels;
+        for (UIView *subview in [self.viewWithTimer subviews]) {
+            if (subview.tag >0) {
+                [subview removeFromSuperview];
+            }
+        }
+        for (UIView *subview in [self.twoView subviews]) {
+            if (subview.tag >0) {
+                [subview removeFromSuperview];
+            }
+        }
+        self.viewWithTimer.hidden = NO;
+        self.beforeAfter.hidden = NO;
+        self.firstMost.hidden = YES;
+        CGRect frame = self.viewWithTimer.frame;
+        frame.size.height += 20;
+        self.viewWithTimer.frame = frame;
+        frame = self.twoView.frame;
+        frame.size.height += 20;
+        self.twoView.frame = frame;
+        
+        //Putting info about openingSoon/closingSoon bridges to screen
+        if (openSize > 0){
+            
+            //there are openingSoon bridges
+            if (openSize == 1){
+             self.beforeAfter.text = @"СКОРО РАЗВЕДЕТСЯ";
+            }else{
+                self.beforeAfter.text = @"СКОРО РАЗВЕДУТСЯ";
+            }
+            for (int i = 0; i < openSize; i++){
+                
+                
+                UILabel* newLabel=[[UILabel alloc]initWithFrame:CGRectMake(6, 0+i*25, 221, 21)];
+                NSString *timeStr;
+                if (openingSoonTime[i] - currentTime < 5){
+                    timeStr = [NSString stringWithFormat:@"%d минуты", openingSoonTime[i] - currentTime];
+                } else {
+                    timeStr = [NSString stringWithFormat:@"%d минут", openingSoonTime[i] - currentTime];
+                }
+                newLabel.text = [NSString stringWithFormat:@"%@: %@",
+                                 ((OneBridge *)[self.bridge.bridges objectForKey:[NSNumber numberWithInt: openingSoon[i]]]).name,
+                                 timeStr];
+                
+                //NSLog(@"Distance to %@ == %f", newLabel.text,
+                 //     [loc distanceFromLocation:[[CLLocation alloc] initWithLatitude:((OneBridge *)[self.bridge.bridges objectForKey:[NSNumber numberWithInt: openingSoon[i]]]).coord.x longitude:((OneBridge *)[self.bridge.bridges objectForKey:[NSNumber numberWithInt: openingSoon[i]]]).coord.y ]]);
+                
+                
+                newLabel.tag = i + 1;
+                newLabel.alpha = 1;
+                [newLabel setBackgroundColor:[UIColor clearColor]];
+                [newLabel setFont: [UIFont fontWithName:@"Arial" size:11.0]];
+                [newLabel setTextAlignment:NSTextAlignmentCenter];
+                if (i == 0){
+                    self.firstMost.text = newLabel.text;
+                }
+                [self.viewWithTimer addSubview:newLabel];
+            }
+            CGRect frame = self.viewWithTimer.frame;
+            frame.size.height = 25 * openSize;
+            self.viewWithTimer.frame = frame;
+            
+            
+        }
+        if (openSize > 0 && closeSize > 0){
+            self.twoLabel.hidden = YES;
+            self.twoView.hidden = NO;
+            self.twoLabelbefor.hidden = NO;
+            //there are closingSoon bridges and openingSoon too;
+            
+            if (openSize == 1){
+             self.twoLabelbefor.text = @"СКОРО СВЕДЕТСЯ";
+            }else{
+                self.beforeAfter.text = @"СКОРО СВЕДУТСЯ";
+            }
+            for (int i = 0; i < closeSize; i++){
+                
+                
+                UILabel* newLabel=[[UILabel alloc]initWithFrame:CGRectMake(6, 0+i*25, 221, 21)];
+                NSString *timeStr;
+                if (closingSoonTime[i] - currentTime < 5){
+                    timeStr = [NSString stringWithFormat:@"%d минуты", closingSoonTime[i] - currentTime];
+                } else {
+                    timeStr = [NSString stringWithFormat:@"%d минут", closingSoonTime[i] - currentTime];
+                }
+                newLabel.text = [NSString stringWithFormat:@"%@: %@",
+                                 ((OneBridge *)[self.bridge.bridges objectForKey:[NSNumber numberWithInt: closingSoon[i]]]).name,
+                                 timeStr];
+                
+                //NSLog(@"Distance to %@ == %f", newLabel.text,
+                //     [loc distanceFromLocation:[[CLLocation alloc] initWithLatitude:((OneBridge *)[self.bridge.bridges objectForKey:[NSNumber numberWithInt: openingSoon[i]]]).coord.x longitude:((OneBridge *)[self.bridge.bridges objectForKey:[NSNumber numberWithInt: openingSoon[i]]]).coord.y ]]);
+                
+                
+                newLabel.tag = i + 1;
+                newLabel.alpha = 1;
+                [newLabel setBackgroundColor:[UIColor clearColor]];
+                [newLabel setFont: [UIFont fontWithName:@"Arial" size:11.0]];
+                [newLabel setTextAlignment:NSTextAlignmentCenter];
+                if (i == 0){
+                    self.twoLabel.text = newLabel.text;
+                }
+                [self.twoView addSubview:newLabel];
+                
+                
+            }
+            CGRect frame = self.twoView.frame;
+            frame.size.height = 25 * closeSize;
+            self.twoView.frame = frame;
+        }
+        if (openSize == 0 && closeSize > 0){
+            //there are closingSoon bridges and no openingSoon;
+            
+            if (openSize == 1){
+             self.beforeAfter.text = @"СКОРО СВЕДЕТСЯ";
+            }else{
+               self.beforeAfter.text = @"СКОРО СВЕДУТСЯ";
+            }
+            for (int i = 0; i < closeSize; i++){
+                
+                
+                UILabel* newLabel=[[UILabel alloc]initWithFrame:CGRectMake(6, 0+i*25, 221, 21)];
+                NSString *timeStr;
+                if (closingSoonTime[i] - currentTime < 5){
+                    timeStr = [NSString stringWithFormat:@"%d минуты", closingSoonTime[i] - currentTime];
+                } else {
+                    timeStr = [NSString stringWithFormat:@"%d минут", closingSoonTime[i] - currentTime];
+                }
+                newLabel.text = [NSString stringWithFormat:@"%@: %@",
+                                 ((OneBridge *)[self.bridge.bridges objectForKey:[NSNumber numberWithInt: closingSoon[i]]]).name,
+                                 timeStr];
+                
+                //NSLog(@"Distance to %@ == %f", newLabel.text,
+                //     [loc distanceFromLocation:[[CLLocation alloc] initWithLatitude:((OneBridge *)[self.bridge.bridges objectForKey:[NSNumber numberWithInt: openingSoon[i]]]).coord.x longitude:((OneBridge *)[self.bridge.bridges objectForKey:[NSNumber numberWithInt: openingSoon[i]]]).coord.y ]]);
+                
+                
+                newLabel.tag = i + 1;
+                newLabel.alpha = 1;
+                [newLabel setBackgroundColor:[UIColor clearColor]];
+                [newLabel setFont: [UIFont fontWithName:@"Arial" size:11.0]];
+                [newLabel setTextAlignment:NSTextAlignmentCenter];
+                if (i == 0){
+                    self.firstMost.text = newLabel.text;
+                }
+                [self.viewWithTimer addSubview:newLabel];
+                
+                
+            }
+            CGRect frame = self.viewWithTimer.frame;
+            frame.size.height = 25 * closeSize;
+            self.viewWithTimer.frame = frame;
+        }
+        
+        
+        if (openSize == 0 && closeSize == 0){
+            //nothing to show
+            self.beforeAfter.hidden = YES;
+            self.viewWithTimer.hidden = YES;
+            self.firstMost.hidden = YES;
+            self.twoLabel.hidden = YES;
+            self.twoView.hidden = YES;
+            self.twoLabelbefor.hidden = YES;
+        }
+        
         if (allBridgesAreOpened){
             //все мосты разведены
-            CGRect frameLabels=viewWithLabels.frame;
             
-            self.viewWithTimer.hidden=YES;
-            self.beforeAfter.hidden=YES;
-            // butForOpenTimers.hidden=YES;
-            self.twoView.hidden=YES;
-            self.twoLabelbefor.hidden=YES;
-            frameLabels=self.viewWithLabels.frame;
-            // frameLabels.origin.y+=newBot/2;
-            if (newBot==0) {
-                //frameLabels.origin.y+=20;
-            }
-            self.viewWithLabels.frame=frameLabels;
             NSArray* titleInfo=[NSArray arrayWithObjects:@"РОМАНТИКА",
                                 @"БЕЛЫХ НОЧЕЙ",
                                 @"ВО ВСЕЙ КРАСЕ",
@@ -449,23 +689,13 @@
             
             fourLabel.hidden=YES;
             
+            
+            
             return;
         }
         if (atLeastOneOnShortClose){
             //Есть короткая сводка
-            CGRect frameLabels=viewWithLabels.frame;
             
-            self.viewWithTimer.hidden=YES;
-            self.beforeAfter.hidden=YES;
-            // butForOpenTimers.hidden=YES;
-            self.twoView.hidden=YES;
-            self.twoLabelbefor.hidden=YES;
-            frameLabels=self.viewWithLabels.frame;
-            // frameLabels.origin.y+=newBot/2;
-            if (newBot==0) {
-                //frameLabels.origin.y+=20;
-            }
-            self.viewWithLabels.frame=frameLabels;
             NSArray* titleInfo=[NSArray arrayWithObjects:@"ВРЕМЯ",
                                 @"КОРОТКОЙ",
                                 @"СВОДКИ",
@@ -486,22 +716,50 @@
         
         if (noClosedBridgesToVO){
             //На Ваську не проехать
-            CGRect frameLabels=viewWithLabels.frame;
             
-            self.viewWithTimer.hidden=YES;
-            self.beforeAfter.hidden=YES;
-            // butForOpenTimers.hidden=YES;
-            self.twoView.hidden=YES;
-            self.twoLabelbefor.hidden=YES;
-            frameLabels=self.viewWithLabels.frame;
-            // frameLabels.origin.y+=newBot/2;
-            if (newBot==0) {
-                //frameLabels.origin.y+=20;
-            }
-            self.viewWithLabels.frame=frameLabels;
             NSArray* titleInfo=[NSArray arrayWithObjects:@"ЧАС РОМАНТИКИ",
                                 @"НА ВАСИЛЬЕВСКОМ",
                                 @"ОСТРОВЕ",
+                                nil];
+            NSString * new=[[titleInfo objectAtIndex:0] uppercaseString];
+            self.firstLabelInfo.text=new;
+            new=[[titleInfo objectAtIndex:1] uppercaseString];
+            
+            self.shakeLabel.text=[[titleInfo objectAtIndex:1]uppercaseString];
+            new=[[titleInfo objectAtIndex:2] uppercaseString];
+            
+            self.lastLabelInfo.text=[[titleInfo objectAtIndex:2]uppercaseString];
+            
+            fourLabel.hidden=YES;
+            
+            return;
+        }
+        if (atLeastOneIsOpened){
+            //хотя бы один разведен
+            
+            NSArray* titleInfo=[NSArray arrayWithObjects:@"НЕКОТОРЫЕ",
+                                @"МОСТЫ УЖЕ",
+                                @"РАЗВЕДЕНЫ",
+                                nil];
+            NSString * new=[[titleInfo objectAtIndex:0] uppercaseString];
+            self.firstLabelInfo.text=new;
+            new=[[titleInfo objectAtIndex:1] uppercaseString];
+            
+            self.shakeLabel.text=[[titleInfo objectAtIndex:1]uppercaseString];
+            new=[[titleInfo objectAtIndex:2] uppercaseString];
+            
+            self.lastLabelInfo.text=[[titleInfo objectAtIndex:2]uppercaseString];
+            
+            fourLabel.hidden=YES;
+            
+            return;
+        }
+        if (isAtLeastOneIsOpeningSoon){
+            //Какой-то скоро разведется
+            
+            NSArray* titleInfo=[NSArray arrayWithObjects:@"ПРИШЛО ВРЕМЯ",
+                                @"СПЛАНИРОВАТЬ",
+                                @"ВАШ МАРШРУТ",
                                 nil];
             NSString * new=[[titleInfo objectAtIndex:0] uppercaseString];
             self.firstLabelInfo.text=new;
@@ -608,7 +866,7 @@
 
 -(void)openTimers
 {
-    
+    /*
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     [self refTimer];
 
@@ -693,6 +951,7 @@
     {
         [self refTimer];
     }
+     */
 }
 
 -(void)addLabel
@@ -815,9 +1074,10 @@
     if(frame.origin.y!=60)
     {
         
-        frameLabels.origin.y-=(self.viewWithTimer.frame.size.height-25-80)/2;
+        frameLabels.origin.y = -20;
         frame.origin.y=60;
         scroller.frame=frame;
+        NSLog(@"viewWithLabels.frame hideBride; before else");
         viewWithLabels.frame=frameLabels;
         [UIView commitAnimations];
         rightImage.image=[UIImage imageNamed:@"butClose.png"];
@@ -826,8 +1086,8 @@
     {
         
         
-        frameLabels.origin.y=(yMenuBot-419)/2;
-        
+        frameLabels.origin.y= -30;
+        /*
         if([mostWithTimer count]==0)
         {
             frameLabels.origin.y+=newBot/2;
@@ -835,9 +1095,11 @@
                 frameLabels.origin.y+=20;
             }
         }
+         */
         
         frame.origin.y=140;
         scroller.frame=frame;
+        NSLog(@"viewWithLabels.frame hideBride; else");
         viewWithLabels.frame=frameLabels;
         [UIView commitAnimations];
         rightImage.image=[UIImage imageNamed:@"butOpen.png"];

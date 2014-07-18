@@ -38,5 +38,8 @@
 +(Bridge*)initWithView:(UIView*)view belowBiew:(UIView*)upView;
 -(NSInteger)beforeAfterwithCalendar:(NSCalendar *)calendar;
 -(NSArray *)getInfoTitlewithCalendar:(NSCalendar *)calendar;
+
+
+
 //-(void)ChangeView:(BOOL)up;
 @end
