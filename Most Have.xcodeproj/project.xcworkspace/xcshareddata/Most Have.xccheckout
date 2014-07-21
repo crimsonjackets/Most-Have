@@ -5,34 +5,34 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>F684515B-0F75-4877-8781-C20E1E583882</string>
+	<string>4804C86F-815A-4AFA-8D66-6DBE330FC62E</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Most Have</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>8C3CBA51-298D-4C07-B850-C946E58EECA7</key>
-		<string>https://github.com/MaxPilgrim/MostHaveNew</string>
+		<key>260212DF-1C99-497D-8082-45B4CCDA1F8B</key>
+		<string>https://github.com/crimsonjackets/Most-Have.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Most Have.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>8C3CBA51-298D-4C07-B850-C946E58EECA7</key>
+		<key>260212DF-1C99-497D-8082-45B4CCDA1F8B</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/MaxPilgrim/MostHaveNew</string>
+	<string>https://github.com/crimsonjackets/Most-Have.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>8C3CBA51-298D-4C07-B850-C946E58EECA7</string>
+	<string>260212DF-1C99-497D-8082-45B4CCDA1F8B</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>8C3CBA51-298D-4C07-B850-C946E58EECA7</string>
+			<string>260212DF-1C99-497D-8082-45B4CCDA1F8B</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Most-Have</string>
 		</dict>
