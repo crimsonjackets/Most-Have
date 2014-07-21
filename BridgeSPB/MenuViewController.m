@@ -40,7 +40,7 @@
         yMenuBot=0;
     }
     CGRect frame=self.tableView.frame;
-    frame.size.height-=yMenuBot;
+    frame.size.height-=yMenuBot + 15;
     self.tableView.frame=frame;
     frame=self.crimsonJack.frame;
     frame.origin.y+=yMenuBot;

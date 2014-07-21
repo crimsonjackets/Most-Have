@@ -521,8 +521,15 @@
         fourLabel.hidden=NO;
         
         CGRect frameLabels = self.viewWithLabels.frame;
-        frameLabels.origin.y = 120;
+        if (self.twoView.hidden){
+            CGFloat height = self.viewWithTimer.frame.origin.y + self.viewWithTimer.frame.size.height;
+            frameLabels.origin.y = (yMenuBot - self.scroller.frame.origin.y - height) / 2.0;
+        } else {
+            CGFloat height = self.twoView.frame.origin.y + self.twoView.frame.size.height;
+            frameLabels.origin.y = (yMenuBot - self.scroller.frame.origin.y - height) / 2.0;
+        }
         self.viewWithLabels.frame = frameLabels;
+        
         
     }
     else

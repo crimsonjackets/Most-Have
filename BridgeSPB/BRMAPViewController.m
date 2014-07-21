@@ -122,7 +122,11 @@
     Annotation *annotation2 = [Annotation new];
     annotation2.index=index;
     annotation2.title = bridge.name;
-    annotation2.subtitle = bridge.info;
+    if (index < 9){
+        annotation2.subtitle = bridge.info;
+    }else {
+        annotation2.subtitle = [NSString stringWithFormat:@"%@ по заявке",bridge.info];
+    }
     annotation2.coordinate = CLLocationCoordinate2DMake(bridge.coord.x, bridge.coord.y);
     [map addAnnotation:annotation2];
 }
@@ -175,7 +179,7 @@
     
     if(annotation.index<9)
     {
-        annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+        //annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
     } else {
         annotationView.image = [UIImage imageNamed: @"annOpen.png"];
     }
