@@ -8,6 +8,7 @@
 
 #import "BRAppDelegate.h"
 #import "UAirship.h"
+#import "UAConfig.h"
 #import "UAPush.h"
 #import "UAInboxPushHandler.h"
 #import "BRPushViewController.h"
@@ -42,15 +43,15 @@
     //[self customizeAppearance];
     [application setApplicationSupportsShakeToEdit:YES];
     //Create Airship options dictionary and add the required UIApplication launchOptions
-    NSMutableDictionary *takeOffOptions = [NSMutableDictionary dictionary];
-    [takeOffOptions setValue:launchOptions forKey:UAirshipTakeOffOptionsLaunchOptionsKey];
-    
+    //NSMutableDictionary *takeOffOptions = [NSMutableDictionary dictionary];
+    //[takeOffOptions setValue:launchOptions forKey:UAirshipTakeOffOptionsLaunchOptionsKey];
+    UAConfig *config = [UAConfig defaultConfig];
     // Call takeOff (which creates the UAirship singleton), passing in the launch options so the
     // library can properly record when the app is launched from a push notification. This call is
     // required.
     //
     // Populate AirshipConfig.plist with your app's info from https://go.urbanairship.com
-    [UAirship takeOff:takeOffOptions];
+    [UAirship takeOff:config];
     
     // Set the icon badge to zero on startup (optional)
     [[UAPush shared] resetBadge];
@@ -85,6 +86,7 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     
+   /*
     // TestFlight API
   //  TESTFLIGHT_CHECKPOINT(@"Receive Remote Notification");
     
@@ -128,7 +130,7 @@
 
 
     }
-    [UAInboxPushHandler handleNotification:userInfo];
+    [UAInboxPushHandler ]; */
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -149,7 +151,8 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    [UAirship land];
+    //[UAirship land];
+    //Since 4.0.0 is internal. will be called automatically
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 

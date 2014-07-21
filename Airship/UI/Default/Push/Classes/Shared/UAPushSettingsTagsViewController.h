@@ -1,5 +1,5 @@
 /*
- Copyright 2009-2012 Urban Airship Inc. All rights reserved.
+ Copyright 2009-2014 Urban Airship Inc. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
@@ -26,18 +26,15 @@
 #import <UIKit/UIKit.h>
 #import "UAPushSettingsAddTagViewController.h"
 
-@interface UAPushSettingsTagsViewController : UITableViewController<UAPushSettingsAddTagDelegate> {
+@interface UAPushSettingsTagsViewController : UITableViewController<UAPushSettingsAddTagDelegate>
 
-    UAPushSettingsAddTagViewController *addTagController;
-    UIBarButtonItem *addButton;
-    
-    IBOutlet UITableViewCell *textCell;
-    IBOutlet UILabel *textLabel;
-    
-}
+@property (nonatomic, strong) UAPushSettingsAddTagViewController *addTagController;
+@property (nonatomic, strong) UIBarButtonItem *addButton;
 
-@property (nonatomic, retain) UITableViewCell *textCell;
-@property (nonatomic, retain) UILabel *textLabel;
+// These IBOutlets needs to be strong because they have to be re-created and
+// added back to the view for iOS 6.
+@property (nonatomic, strong) IBOutlet UITableViewCell *textCell;
+@property (nonatomic, strong) IBOutlet UILabel *textLabel;
 
 - (void)addItem:(id)sender;
 

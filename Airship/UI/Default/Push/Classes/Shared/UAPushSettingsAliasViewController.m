@@ -1,5 +1,5 @@
 /*
- Copyright 2009-2012 Urban Airship Inc. All rights reserved.
+ Copyright 2009-2014 Urban Airship Inc. All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
@@ -44,30 +44,17 @@ enum {
 
 @implementation UAPushSettingsAliasViewController
 
-@synthesize tableView;
-@synthesize aliasCell;
-@synthesize textCell;
-@synthesize textLabel;
-@synthesize aliasField;
-
-- (void)dealloc {
-	
-    RELEASE_SAFELY(tableView);
-    RELEASE_SAFELY(aliasCell);
-    RELEASE_SAFELY(textCell);
-    RELEASE_SAFELY(textLabel);
-    RELEASE_SAFELY(aliasField);
-	
-    [super dealloc];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
     self.title = @"Device Alias";
-    
-    aliasField.text = [UAPush shared].alias;
-    textLabel.text = @"Assign an alias to a device or a group of devices to simplify "
+
+    UITextField *strongAliasField = self.aliasField;
+    strongAliasField.text = [UAPush shared].alias;
+    strongAliasField.clearsOnBeginEditing = YES;
+    strongAliasField.accessibilityLabel = @"Edit Alias";
+    self.textLabel.text = @"Assign an alias to a device or a group of devices to simplify "
                      @"the process of sending notifications.";
 }
 
@@ -86,9 +73,10 @@ enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SectionDesc) {
-        CGFloat height = [textLabel.text sizeWithFont:textLabel.font
+        UILabel *strongTextLabel = self.textLabel;
+        CGFloat height = [strongTextLabel.text sizeWithFont:strongTextLabel.font
                           constrainedToSize:CGSizeMake(300, 1500)
-                              lineBreakMode:UILineBreakModeWordWrap].height;
+                              lineBreakMode:NSLineBreakByWordWrapping].height;
         return height + kCellPaddingHeight * 2;
     } else {
         return 44;
@@ -120,9 +108,9 @@ enum {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.section == SectionAlias) {
-        return aliasCell;
+        return self.aliasCell;
     } else if (indexPath.section == SectionDesc) {
-        return textCell;
+        return self.textCell;
     }
     
     return nil;
@@ -138,20 +126,20 @@ enum {
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     
-	NSString *newAlias = aliasField.text;
-	
-	// Trim leading whitespace
-	NSRange range = [newAlias rangeOfString:@"^\\s*" options:NSRegularExpressionSearch];
-	NSString *result = [newAlias stringByReplacingCharactersInRange:range withString:@""];
-	
+    NSString *newAlias = self.aliasField.text;
+
+    // Trim leading whitespace
+    NSRange range = [newAlias rangeOfString:@"^\\s*" options:NSRegularExpressionSearch];
+    NSString *result = [newAlias stringByReplacingCharactersInRange:range withString:@""];
+
     if ([result length] != 0) {
         [[UAPush shared] setAlias:result];
         [[UAPush shared] updateRegistration];
     } else {
-		textField.text = nil;
-		[[UAPush shared] setAlias:nil];
+        textField.text = nil;
+        [[UAPush shared] setAlias:nil];
         [[UAPush shared] updateRegistration];
-	}
+    }
 }
 
 @end
