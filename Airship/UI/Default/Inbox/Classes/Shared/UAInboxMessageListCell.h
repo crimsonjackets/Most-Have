@@ -1,5 +1,5 @@
 /*
-Copyright 2009-2012 Urban Airship Inc. All rights reserved.
+Copyright 2009-2014 Urban Airship Inc. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -30,43 +30,32 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /**
  * The UITableViewCell subclass used by UAInboxMessageListController.
  */
-@interface UAInboxMessageListCell : UITableViewCell {
-    IBOutlet UILabel* title;
-    IBOutlet UILabel* dateView;
-    IBOutlet UIView* unreadIndicator;
-    IBOutlet UIImageView *checkmark;
-    IBOutlet UIView *selectedEditingBackgroundView;
-}
+@interface UAInboxMessageListCell : UITableViewCell
 
 /**
  *Displays the message date.
  */
-@property (nonatomic, retain) UILabel* dateView;
+@property (nonatomic, weak) IBOutlet UILabel *dateView;
 
 /**
  * Displays the message title.
  */
-@property (nonatomic, retain) UILabel* title;
+@property (nonatomic, weak) IBOutlet UILabel *title;
 
 /**
  * Indicates whether a message has previously been read.
  */
-@property (nonatomic, retain) UIView* unreadIndicator;
+@property (nonatomic, weak) IBOutlet UIView *unreadIndicator;
 
 /**
- * Checkmark image used in batch message selection
+ * The message icon.
  */
-@property (nonatomic, retain) UIImageView *checkmark;
-
-/**
- * Background view used when a cell is selected in editing mode.
- */
-@property (nonatomic, retain) UIView *selectedEditingBackgroundView;
+@property (nonatomic, weak) IBOutlet UIImageView *listIconView;
 
 /**
  * Set the UAInboxMessage associated with this cell.
  * @param message The associated UAInboxMessage object.
  */
-- (void)setData:(UAInboxMessage*)message;
+- (void)setData:(UAInboxMessage *)message;
 
 @end

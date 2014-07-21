@@ -1,5 +1,5 @@
 /*
- Copyright 2009-2012 Urban Airship Inc. All rights reserved.
+ Copyright 2009-2014 Urban Airship Inc. All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
@@ -26,18 +26,14 @@
 #import <UIKit/UIKit.h>
 
 
-@interface UAPushSettingsAliasViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
-    IBOutlet UITableView *tableView;
-    IBOutlet UITableViewCell *aliasCell;
-    IBOutlet UITableViewCell *textCell;
-    IBOutlet UILabel *textLabel;
-    IBOutlet UITextField *aliasField;
-}
+@interface UAPushSettingsAliasViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
-@property (nonatomic, retain) UITableView *tableView;
-@property (nonatomic, retain) UITableViewCell *aliasCell;
-@property (nonatomic, retain) UITableViewCell *textCell;
-@property (nonatomic, retain) UILabel *textLabel;
-@property (nonatomic, retain) UITextField *aliasField;
+// These IBOutlets needs to be strong because they have to be re-created and
+// added back to the view for iOS 6.
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) IBOutlet UITableViewCell *aliasCell;
+@property (nonatomic, strong) IBOutlet UITableViewCell *textCell;
+@property (nonatomic, strong) IBOutlet UILabel *textLabel;
+@property (nonatomic, strong) IBOutlet UITextField *aliasField;
 
 @end

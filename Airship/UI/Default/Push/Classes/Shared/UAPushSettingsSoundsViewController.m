@@ -1,5 +1,5 @@
 /*
- Copyright 2009-2012 Urban Airship Inc. All rights reserved.
+ Copyright 2009-2014 Urban Airship Inc. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
@@ -41,9 +41,6 @@ enum {
 
 @implementation UAPushSettingsSoundsViewController
 
-@synthesize textCell;
-@synthesize textLabel;
-
 #pragma mark -
 #pragma mark View lifecycle
 
@@ -53,21 +50,21 @@ enum {
 
     self.title = @"Bundled Sounds";
     
-    if (soundList == nil) {
+    if (self.soundList == nil) {
 
         NSArray *aiffFiles = [[NSBundle mainBundle] pathsForResourcesOfType:@"aiff" inDirectory:nil];
         NSArray *cafFiles = [[NSBundle mainBundle] pathsForResourcesOfType:@"caf" inDirectory:nil];
         NSArray *wavFiles = [[NSBundle mainBundle] pathsForResourcesOfType:@"wav" inDirectory:nil];
 
                               
-        soundList = [[NSMutableArray alloc] init];
-        [soundList addObjectsFromArray:aiffFiles];
-        [soundList addObjectsFromArray:cafFiles];
-        [soundList addObjectsFromArray:wavFiles];
+        self.soundList = [[NSMutableArray alloc] init];
+        [self.soundList addObjectsFromArray:aiffFiles];
+        [self.soundList addObjectsFromArray:cafFiles];
+        [self.soundList addObjectsFromArray:wavFiles];
         
     }
     
-    textLabel.text = @"Notifications can optionally trigger a custom sound upon receipt. "
+    self.textLabel.text = @"Notifications can optionally trigger a custom sound upon receipt. "
     @"Send a sound with your push by including the sound's filename in the Urban Airship push form. "
     @"This sample application includes the sound files below.";
 }
@@ -88,7 +85,7 @@ enum {
     // Return the number of rows in the section.
     switch (section) {
         case SectionSounds:
-            return [soundList count];
+            return (NSInteger)[self.soundList count];
         case SectionDesc:
             return DescSectionRowCount;
         default:
@@ -105,7 +102,7 @@ enum {
     switch (indexPath.section) {
         case SectionDesc:
         {
-            cell = textCell;
+            cell = self.textCell;
             break;
         }
         case SectionSounds:
@@ -114,11 +111,11 @@ enum {
             
             cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
             if (cell == nil) {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             }
             
             // Configure the cell...
-            cell.textLabel.text = [[[soundList objectAtIndex:indexPath.row] pathComponents] lastObject];
+            cell.textLabel.text = [[[self.soundList objectAtIndex:indexPath.row] pathComponents] lastObject];
             break;
         }
         default:
@@ -135,7 +132,7 @@ enum {
 
     if (indexPath.section == SectionSounds) {
         SystemSoundID soundID;
-        AudioServicesCreateSystemSoundID((CFURLRef)[NSURL fileURLWithPath:[soundList objectAtIndex:indexPath.row]], &soundID);
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath:[self.soundList objectAtIndex:(NSUInteger)indexPath.row]], &soundID);
         AudioServicesPlayAlertSound(soundID);
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -146,9 +143,10 @@ enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SectionDesc) {
-        CGFloat height = [textLabel.text sizeWithFont:textLabel.font
+        UILabel *strongTextLabel = self.textLabel;
+        CGFloat height = [strongTextLabel.text sizeWithFont:strongTextLabel.font
                           constrainedToSize:CGSizeMake(240, 1500)
-                              lineBreakMode:UILineBreakModeWordWrap].height;
+                              lineBreakMode:NSLineBreakByWordWrapping].height;
         return height + kCellPaddingHeight * 2;
     } else {
         return 44;
@@ -175,15 +173,6 @@ enum {
 }
 
 
-- (void)dealloc {
-    
-    self.textCell = nil;
-    self.textLabel = nil;
-    
-    RELEASE_SAFELY(soundList);
-    
-    [super dealloc];
-}
 
 
 @end

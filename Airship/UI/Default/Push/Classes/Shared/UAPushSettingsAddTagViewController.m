@@ -1,5 +1,5 @@
 /*
- Copyright 2009-2012 Urban Airship Inc. All rights reserved.
+ Copyright 2009-2014 Urban Airship Inc. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
@@ -36,33 +36,13 @@ enum TagSections {
 
 @implementation UAPushSettingsAddTagViewController
 
-@synthesize tagDelegate;
-@synthesize tableView;
-@synthesize tagCell;
-
-@synthesize tagField;
-@synthesize presetTags;
-
-
-- (void)dealloc {
-    RELEASE_SAFELY(cancelButton);
-    RELEASE_SAFELY(saveButton);
-    
-    [tableView release];
-    [tagCell release];
-    [tagField release];
-    
-    self.presetTags = nil;
-    
-    [super dealloc];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.title = @"New Tag";
     
-    tagField.text = @"";
+    self.tagField.text = @"";
     
     if (!self.presetTags) {
         self.presetTags = [UATagUtils createTags:
@@ -70,15 +50,15 @@ enum TagSections {
     }
     
     //Create an add button in the nav bar
-    if (cancelButton == nil) {
-        cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
+    if (self.cancelButton == nil) {
+        self.cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
     }
-    self.navigationItem.leftBarButtonItem = cancelButton;
+    self.navigationItem.leftBarButtonItem = self.cancelButton;
     
-    if (saveButton == nil) {
-        saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(save:)];
+    if (self.saveButton == nil) {
+        self.saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(save:)];
     }
-    self.navigationItem.rightBarButtonItem = saveButton;
+    self.navigationItem.rightBarButtonItem = self.saveButton;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -92,26 +72,27 @@ enum TagSections {
 #pragma mark -
 #pragma mark UITableViewDelegate
 
-//#define kCellPaddingHeight 10
+#define kCellPaddingHeight 11
 
-// TODO: text?
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    
-    switch (indexPath.section) {
-        case TagSectionPreset:
-        case TagSectionCustom:
-            return 44;
-        default:
-            break;
+    NSString *text;
+    if (indexPath.section == TagSectionCustom) {
+        text = @"Custom Tag";
+    } else {
+        text = [self.presetTags objectAtIndex:(NSUInteger)indexPath.row];
     }
-    return 0;
+
+    CGFloat height = [text sizeWithFont:self.tagField.font
+                      constrainedToSize:CGSizeMake(240, 1500)
+                          lineBreakMode:NSLineBreakByWordWrapping].height;
+
+    return height + kCellPaddingHeight * 2;
 }
 
 - (void)tableView:(UITableView *)view didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
     if (indexPath.section == TagSectionPreset) {
-        [tagDelegate addTag:[self.presetTags objectAtIndex:indexPath.row]];
+        [self.tagDelegate addTag:[self.presetTags objectAtIndex:(NSUInteger)indexPath.row]];
         [view deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
@@ -139,7 +120,7 @@ enum TagSections {
         case TagSectionCustom:
             return 1;
         case TagSectionPreset:
-            return [self.presetTags count];
+            return (NSInteger)[self.presetTags count];
         default:
             break;
     }
@@ -155,7 +136,7 @@ enum TagSections {
     
     switch (indexPath.section) {
         case TagSectionCustom:
-            return tagCell;
+            return self.tagCell;
         case TagSectionPreset:
         {
             UITableViewCell *cell;
@@ -164,12 +145,12 @@ enum TagSections {
             
             cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
             if (cell == nil) {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             }
             
             // Configure the cell...
             
-            cell.textLabel.text = [presetTags objectAtIndex:indexPath.row];
+            cell.textLabel.text = [self.presetTags objectAtIndex:indexPath.row];
             cell.accessoryType = UITableViewCellAccessoryNone;
             
             return cell;
@@ -197,13 +178,14 @@ enum TagSections {
 #pragma mark Save/Cancel
 
 - (void)save:(id)sender {
-    [tagDelegate addTag:tagField.text];
-    tagField.text = nil;
+    UITextField *strongTagField = self.tagField;
+    [self.tagDelegate addTag:strongTagField.text];
+    strongTagField.text = nil;
 }
 
 - (void)cancel:(id)sender {
-    [tagDelegate cancelAddTag];
-    tagField.text = nil;
+    [self.tagDelegate cancelAddTag];
+    self.tagField.text = nil;
 }
     
 
