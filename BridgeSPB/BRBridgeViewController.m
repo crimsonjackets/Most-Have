@@ -11,7 +11,7 @@
 #import "MoreInfoViewController.h"
 #import "Annotation.h"
 #import "InitSlViewController.h"
-
+#import "MHBridgeInfo.h"
 
 #define METERS_PER_MILE 1609.344
 @interface BRBridgeViewController ()
@@ -242,8 +242,42 @@
     if (annotation == mapView.userLocation) {
         return nil;
     }
+    //Новые данные
+    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"bridgesInfo"];
+    NSArray *newBridgesInfo = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    //Массив, отображающий индексы старых данных на индексы новых
+    int indexInNew[13] = {0, 1, 4, 5, 6, 7, 8, 3, 2, 10, 11, 12, 9};
+    MHBridgeInfo *currBridgeInfo = newBridgesInfo[indexInNew[annotation.index]];
+    
     MKAnnotationView * annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
-    annotationView.image = [bridges findAnnImage:annotation.index];
+    
+    
+    if (annotation.index < 9){
+        annotationView.image = [UIImage imageNamed: @"annOpen.png"];
+    } else {
+        return nil;
+    }
+  
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDate *currentDate = [NSDate date];
+    NSDateComponents *currentComps = [calendar components:(  NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:currentDate];
+    NSInteger currTime = currentComps.hour * 60 + currentComps.minute;
+
+    if(currTime >= currBridgeInfo.openTime && currTime <= currBridgeInfo.closeTime){
+        annotationView.image = [UIImage imageNamed: @"annClose.png"];
+    }
+    if (currTime >= currBridgeInfo.openTime - 30 && currTime < currBridgeInfo.openTime){
+        annotationView.image = [UIImage imageNamed: @"annWait.png"];
+    }
+    
+    if (currBridgeInfo.isOpenedTwoTimes){
+        if(currTime >= currBridgeInfo.openTime2 && currTime <= currBridgeInfo.closeTime2){
+            annotationView.image = [UIImage imageNamed: @"annClose.png"];
+        }
+        if (currTime >= currBridgeInfo.openTime2 - 30 && currTime < currBridgeInfo.openTime2){
+            annotationView.image = [UIImage imageNamed: @"annWait.png"];
+        }
+    }
     
    // annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
     annotationView.canShowCallout = YES;
