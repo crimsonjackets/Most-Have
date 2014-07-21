@@ -169,7 +169,7 @@
     self.grafic.dataSource = self;
     self.grafic.delegate = self;
     //Table footer
-    CGRect titleRect = CGRectMake(10, 0, 310, 50);
+    CGRect titleRect = CGRectMake(10, 0, 290, 50);
     UILabel *tableFooter = [[UILabel alloc] initWithFrame:titleRect];
     tableFooter.textColor = [UIColor grayColor];
     tableFooter.backgroundColor = [self.grafic backgroundColor];

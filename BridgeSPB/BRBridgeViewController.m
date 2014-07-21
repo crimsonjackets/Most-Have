@@ -11,7 +11,7 @@
 #import "MoreInfoViewController.h"
 #import "Annotation.h"
 #import "InitSlViewController.h"
-
+#import "MHBridgeInfo.h"
 
 #define METERS_PER_MILE 1609.344
 @interface BRBridgeViewController ()
@@ -68,14 +68,14 @@
 
    // [self.view insertSubview:self.AllView belowSubview:self.viewWithHelp];
     
-    CGRect frame=menu.frame;
-    frame.origin.y+=yMenuBot;
-    menu.frame=frame;
+    //CGRect frame=menu.frame;
+    //frame.origin.y+=yMenuBot;
+    //menu.frame=frame;
     
 
     
-    frame=self.AllView.frame;
-    frame.size.height-=91-yMenuBot-10;
+    CGRect frame=self.AllView.frame;
+    frame.size.height-=91-yMenuBot-20;
     self.AllView.frame=frame;
     
     frame=self.viewWithHelp.frame;
@@ -103,7 +103,7 @@
     [self.AllView addSubview:moreInfo];
     moreInfo.alpha=0.8;
     
-    UISwipeGestureRecognizer *swipeUp = [[UISwipeGestureRecognizer alloc]
+    /*UISwipeGestureRecognizer *swipeUp = [[UISwipeGestureRecognizer alloc]
                                          initWithTarget:self
                                          action:@selector(openMenu:)];
     swipeUp.direction = UISwipeGestureRecognizerDirectionUp;
@@ -113,7 +113,7 @@
                                            action:@selector(openMenu:)];
     swipeDown.direction = UISwipeGestureRecognizerDirectionDown;
     [self.AllView addGestureRecognizer:swipeDown];
-    
+    */
     //инициализация шапки
     self.bridges=[Bridge initWithView:self.view belowBiew:self.AllView];
     leftImage=[[UIImageView alloc]initWithFrame:CGRectMake(10, 15, 40, 30)];
@@ -132,11 +132,12 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    myTimer=[NSTimer scheduledTimerWithTimeInterval:3
+   /* myTimer=[NSTimer scheduledTimerWithTimeInterval:3
                                              target:self
                                            selector:@selector(menuShowing)
                                            userInfo:nil
                                             repeats:YES];
+    */
     [self.bridges refreshLoad:YES];
 }
 
@@ -174,7 +175,9 @@
 }
 //кнопка больше информации о мосте
 - (IBAction)moreInfo:(id)sender {
+    /*
     CGRect frame=self.menu.frame;
+    
     if(frame.origin.y!=460+yMenuBot)
     {
         [UIView beginAnimations:nil context:nil];
@@ -185,7 +188,7 @@
         [UIView commitAnimations];
 
     }
-    
+    */
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.9];
     
@@ -239,8 +242,42 @@
     if (annotation == mapView.userLocation) {
         return nil;
     }
+    //Новые данные
+    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"bridgesInfo"];
+    NSArray *newBridgesInfo = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    //Массив, отображающий индексы старых данных на индексы новых
+    int indexInNew[13] = {0, 1, 4, 5, 6, 7, 8, 3, 2, 10, 11, 12, 9};
+    MHBridgeInfo *currBridgeInfo = newBridgesInfo[indexInNew[annotation.index]];
+    
     MKAnnotationView * annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
-    annotationView.image = [bridges findAnnImage:annotation.index];
+    
+    
+    if (annotation.index < 9){
+        annotationView.image = [UIImage imageNamed: @"annOpen.png"];
+    } else {
+        return nil;
+    }
+  
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDate *currentDate = [NSDate date];
+    NSDateComponents *currentComps = [calendar components:(  NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:currentDate];
+    NSInteger currTime = currentComps.hour * 60 + currentComps.minute;
+
+    if(currTime >= currBridgeInfo.openTime && currTime <= currBridgeInfo.closeTime){
+        annotationView.image = [UIImage imageNamed: @"annClose.png"];
+    }
+    if (currTime >= currBridgeInfo.openTime - 30 && currTime < currBridgeInfo.openTime){
+        annotationView.image = [UIImage imageNamed: @"annWait.png"];
+    }
+    
+    if (currBridgeInfo.isOpenedTwoTimes){
+        if(currTime >= currBridgeInfo.openTime2 && currTime <= currBridgeInfo.closeTime2){
+            annotationView.image = [UIImage imageNamed: @"annClose.png"];
+        }
+        if (currTime >= currBridgeInfo.openTime2 - 30 && currTime < currBridgeInfo.openTime2){
+            annotationView.image = [UIImage imageNamed: @"annWait.png"];
+        }
+    }
     
    // annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
     annotationView.canShowCallout = YES;
@@ -418,42 +455,44 @@
 
 
 - (IBAction)goBrGraph:(id)sender {
-    if(butMoreInfo.alpha!=0.2)
+    if(butMoreInfo.alpha == 0)
     {
-    UIColor *newColor=button.backgroundColor;
-    [button setBackgroundColor:laftBut.backgroundColor];
-    [laftBut setBackgroundColor:newColor];
+        UIColor *newColor=button.backgroundColor;
+        [button setBackgroundColor:laftBut.backgroundColor];
+        [laftBut setBackgroundColor:newColor];
+    
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.5];
+        butMoreInfo.alpha=0.2;
+        imageBridge.alpha=1;
+        NameBr.alpha=1;
+        info.alpha=1;
+        moreInfo.alpha=0.8;
+        map.alpha=0;
+        self.goToCur.alpha=0;
+        [UIView commitAnimations];
     }
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.5];
-    butMoreInfo.alpha=0.2;
-    imageBridge.alpha=1;
-    NameBr.alpha=1;
-    info.alpha=1;
-    moreInfo.alpha=0.8;
-    map.alpha=0;
-    self.goToCur.alpha=0;
-    [UIView commitAnimations];
 }
 
 - (IBAction)goMap:(id)sender {
     if(butMoreInfo.alpha!=0)
     {
-    UIColor *newColor=button.backgroundColor;
-    [button setBackgroundColor:laftBut.backgroundColor];
-    [laftBut setBackgroundColor:newColor];
+        UIColor *newColor=button.backgroundColor;
+        [button setBackgroundColor:laftBut.backgroundColor];
+        [laftBut setBackgroundColor:newColor];
+        
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.5];
+        
+        self.goToCur.alpha=1;
+        map.alpha=1;
+        butMoreInfo.alpha=0;
+        imageBridge.alpha=0;
+        NameBr.alpha=0;
+        info.alpha=0;
+        moreInfo.alpha=0;
+        [UIView commitAnimations];
     }
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.5];
-    
-    self.goToCur.alpha=1;
-    map.alpha=1;
-    butMoreInfo.alpha=0;
-    imageBridge.alpha=0;
-    NameBr.alpha=0;
-    info.alpha=0;
-    moreInfo.alpha=0;
-    [UIView commitAnimations];
 }
 
 -(void)updateStuff

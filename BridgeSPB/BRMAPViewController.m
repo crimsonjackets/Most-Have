@@ -14,7 +14,7 @@
 #import "MoreInfoViewController.h"
 #import <MapKit/MapKit.h>
 #import "InitSlViewController.h"
-
+#import "MHBridgeInfo.h"
 
 #define METERS_PER_MILE 1609.344
 
@@ -83,11 +83,11 @@
     //frame=viewInfoMap.frame;
     //frame.origin.y+=yMenuBot;
     //viewInfoMap.frame=frame;
-
+    
     [self.view insertSubview:menu aboveSubview:viewInfoMap];
     
     viewInfoMap.layer.cornerRadius=5;
-        
+    
     self.bridges=[Bridge initWithView:self.view belowBiew:self.map];
     leftImage=[[UIImageView alloc]initWithFrame:CGRectMake(10, 15, 40, 30)];
     rightImage=[[UIImageView alloc]initWithFrame:CGRectMake(260, 30, 35, 5)];
@@ -104,24 +104,29 @@
     laftBut.layer.borderWidth=2;
     
     map.showsUserLocation = YES;
-
+    
     MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(59.921732f, 30.358286f), 7*METERS_PER_MILE, 7*METERS_PER_MILE);
     
-
-     MKCoordinateRegion adjustRegion = [self.map regionThatFits:viewRegion];
+    
+    MKCoordinateRegion adjustRegion = [self.map regionThatFits:viewRegion];
     [map setRegion:adjustRegion animated:YES];
-
+    
 }
 
 
 
 -(void) inputAnnoWith:(NSInteger)index
 {
+    if (index == 12) return;
     OneBridge *bridge=[self.bridges.bridges objectForKey:[NSNumber numberWithInt:index]] ;
     Annotation *annotation2 = [Annotation new];
     annotation2.index=index;
     annotation2.title = bridge.name;
-    annotation2.subtitle = bridge.info;
+    if (index < 9){
+        annotation2.subtitle = bridge.info;
+    }else {
+        annotation2.subtitle = [NSString stringWithFormat:@"%@ по заявке",bridge.info];
+    }
     annotation2.coordinate = CLLocationCoordinate2DMake(bridge.coord.x, bridge.coord.y);
     [map addAnnotation:annotation2];
 }
@@ -132,19 +137,57 @@
     if (annotation == mapView.userLocation) {
         return nil;
     }
-        
-        MKAnnotationView * annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
-        annotationView.image = [bridges findAnnImage:annotation.index];
-        annotationView.frame=CGRectMake(0, 0, 14, 20);
-        if(annotation.index<9)
-        {
-        annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-            }
-        annotationView.canShowCallout = YES;
-      
-        
-        return annotationView;
-
+    
+    //Новые данные
+    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"bridgesInfo"];
+    NSArray *newBridgesInfo = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    //Массив, отображающий индексы старых данных на индексы новых
+    int indexInNew[13] = {0, 1, 4, 5, 6, 7, 8, 3, 2, 10, 11, 12, 9};
+    MHBridgeInfo *currBridgeInfo = newBridgesInfo[indexInNew[annotation.index]];
+    
+    MKAnnotationView * annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
+    
+    
+    if (annotation.index < 12){
+        annotationView.image = [UIImage imageNamed: @"annOpen.png"];
+    } else {
+        return nil;
+    }
+    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDate *currentDate = [NSDate date];
+    NSDateComponents *currentComps = [calendar components:(  NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:currentDate];
+    NSInteger currTime = currentComps.hour * 60 + currentComps.minute;
+    
+    if(currTime >= currBridgeInfo.openTime && currTime <= currBridgeInfo.closeTime){
+        annotationView.image = [UIImage imageNamed: @"annClose.png"];
+    }
+    if (currTime >= currBridgeInfo.openTime - 30 && currTime < currBridgeInfo.openTime){
+        annotationView.image = [UIImage imageNamed: @"annWait.png"];
+    }
+    
+    if (currBridgeInfo.isOpenedTwoTimes){
+        if(currTime >= currBridgeInfo.openTime2 && currTime <= currBridgeInfo.closeTime2){
+            annotationView.image = [UIImage imageNamed: @"annClose.png"];
+        }
+        if (currTime >= currBridgeInfo.openTime2 - 30 && currTime < currBridgeInfo.openTime2){
+            annotationView.image = [UIImage imageNamed: @"annWait.png"];
+        }
+    }
+    
+    
+    
+    if(annotation.index<9)
+    {
+        //annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+    } else {
+        annotationView.image = [UIImage imageNamed: @"annOpen.png"];
+    }
+    annotationView.canShowCallout = YES;
+    annotationView.frame=CGRectMake(0, 0, 14, 20);
+    
+    return annotationView;
+    
     
 }
 
@@ -176,7 +219,7 @@ calloutAccessoryControlTapped:(UIControl *)control
 - (IBAction)toGraph:(id)sender {
     MoreInfoViewController *back=[self.storyboard instantiateViewControllerWithIdentifier:@"graph"];
     back.yMenu=403+yMenuBot;
-
+    
     //[self.navigationController popViewControllerAnimated:NO];
     [self.navigationController popViewControllerAnimated:NO];
     
@@ -193,7 +236,7 @@ calloutAccessoryControlTapped:(UIControl *)control
     transition.type = kCATransitionReveal;
     transition.subtype = kCATransitionFromBottom;
     [self.navigationController.view.layer addAnimation:transition forKey:nil];
-
+    
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
@@ -201,20 +244,20 @@ calloutAccessoryControlTapped:(UIControl *)control
 {
     if(map.frame.origin.y>60)
     {
-    UITouch *touch = [touches anyObject];
-    CGPoint touchPnt = [touch locationInView:self.view];
-
-    NSInteger index=[self.bridges findBridge:touchPnt];
-    [self.bridges Information:index];
+        UITouch *touch = [touches anyObject];
+        CGPoint touchPnt = [touch locationInView:self.view];
+        
+        NSInteger index=[self.bridges findBridge:touchPnt];
+        [self.bridges Information:index];
     }
-
+    
 }
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 { if(map.frame.origin.y>60)
 {
     UITouch *touch = [touches anyObject];
     CGPoint touchPnt = [touch locationInView:self.view];
-
+    
     NSInteger index=[self.bridges findBridge:touchPnt];
     
     [self.bridges Information:index];
@@ -225,19 +268,19 @@ calloutAccessoryControlTapped:(UIControl *)control
 {
     if(map.frame.origin.y>60)
     {
-    UITouch *touch = [touches anyObject];
-    CGPoint touchPnt = [touch locationInView:self.view];
-
-    [self.bridges Information:-1];
-    NSInteger index=[self.bridges findBridge:touchPnt];
-    if (index>=0) {
-
-        BRBridgeViewController *back=[self.storyboard instantiateViewControllerWithIdentifier:@"bridgeTop"];
-        OneBridge *bridge=[self.bridges.bridges objectForKey:[NSNumber numberWithInt:index]] ;
-        back.bridge=bridge;
-        [self.navigationController pushViewController:back animated:YES];
-
-    }
+        UITouch *touch = [touches anyObject];
+        CGPoint touchPnt = [touch locationInView:self.view];
+        
+        [self.bridges Information:-1];
+        NSInteger index=[self.bridges findBridge:touchPnt];
+        if (index>=0) {
+            
+            BRBridgeViewController *back=[self.storyboard instantiateViewControllerWithIdentifier:@"bridgeTop"];
+            OneBridge *bridge=[self.bridges.bridges objectForKey:[NSNumber numberWithInt:index]] ;
+            back.bridge=bridge;
+            [self.navigationController pushViewController:back animated:YES];
+            
+        }
     }
 }
 
@@ -267,7 +310,7 @@ calloutAccessoryControlTapped:(UIControl *)control
         [UIView commitAnimations];
         rightImage.image=[UIImage imageNamed:@"butOpen.png"];
     }
-        [self.bridges refreshLoad:NO];
+    [self.bridges refreshLoad:NO];
     
     
 }
@@ -283,7 +326,7 @@ calloutAccessoryControlTapped:(UIControl *)control
     {
         [self inputAnnoWith:i];
     }
-
+    
 }
 
 -(void)goToPush
@@ -311,19 +354,19 @@ calloutAccessoryControlTapped:(UIControl *)control
     NSString *urlString = [NSString stringWithFormat:@"http://nominatim.openstreetmap.org/search?format=xml&lat=%f&lon=%f&zoom=18&addressdetails=1&accept-language=ru",pdblLatitude, pdblLongitude];
     NSError* error;
     NSString *locationString = [NSString stringWithContentsOfURL:[NSURL URLWithString:urlString] encoding:NSASCIIStringEncoding error:&error];
-
+    
     
     locationString = [locationString stringByReplacingOccurrencesOfString:@"\"" withString:@""];
     return [locationString substringFromIndex:6];
 }
 
 - (BOOL)shouldAutorotate {
-
+    
     return NO;
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
-
+    
     return UIInterfaceOrientationPortrait;
 }
 
