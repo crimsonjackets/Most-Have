@@ -784,14 +784,14 @@ else
         bridge.time2=timeSecond;
         if(timeFirst.hourOpen==timeSecond.hourOpen)
         {
-            bridge.info=[NSString stringWithFormat:@"Разведен с %@%i-%@%i до %@%i-%@%i",
-                         timeFirst.hourClS,timeFirst.hourClose,timeFirst.minClS, timeFirst.minClose,timeFirst.hourOpS, timeFirst.hourOpen,timeFirst.minOpS,timeFirst.minOpen];
+            bridge.info=[NSString stringWithFormat:@"Разведен с %i-%@%i до %i-%@%i",
+                         timeFirst.hourClose,timeFirst.minClS, timeFirst.minClose, timeFirst.hourOpen,timeFirst.minOpS,timeFirst.minOpen];
         }
         else
         {
-            bridge.info=[NSString stringWithFormat:@"Разведен с %@%i-%@%i до %@%i-%@%i,с %@%i-%@%i до %@%i-%@%i",
-                         timeFirst.hourClS,timeFirst.hourClose,timeFirst.minClS, timeFirst.minClose,timeFirst.hourOpS, timeFirst.hourOpen,timeFirst.minOpS,timeFirst.minOpen,
-                         timeSecond.hourClS,timeSecond.hourClose,timeSecond.minClS, timeSecond.minClose,timeSecond.hourOpS, timeSecond.hourOpen,timeSecond.minOpS,timeSecond.minOpen];
+            bridge.info=[NSString stringWithFormat:@"Разведен с %i-%@%i до %i-%@%i,с %i-%@%i до %i-%@%i",
+                         timeFirst.hourClose,timeFirst.minClS, timeFirst.minClose, timeFirst.hourOpen,timeFirst.minOpS,timeFirst.minOpen,
+                         timeSecond.hourClose,timeSecond.minClS, timeSecond.minClose, timeSecond.hourOpen,timeSecond.minOpS,timeSecond.minOpen];
         }
         if(i==1)
         {

@@ -618,6 +618,9 @@ if(frame.origin.y!=460+yMenuBot)
     int index = indexPath.row;
     NSLog(@"Configuring cell at index %d", index);
     cell.nameLabel.text = ((MHBridgeInfo *) bridges[index]).name ;
+    if ([cell.nameLabel.text  isEqual: @"Благовещенский"]){
+        cell.nameLabel.text = @"Л. Шмидта";
+    }
     //cell.nameLabel.text = [NSString stringWithFormat:@"%C%C",[((Bridge *) bridges[index]).name characterAtIndex:0],
     //                       [((Bridge *) bridges[index]).name characterAtIndex:1]];
     cell.timeLine.bridgeOpen = ((MHBridgeInfo *) bridges[index]).openTime;

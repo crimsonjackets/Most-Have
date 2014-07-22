@@ -179,7 +179,7 @@
     
     if(annotation.index<9)
     {
-        //annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+        annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
     } else {
         annotationView.image = [UIImage imageNamed: @"annOpen.png"];
     }
