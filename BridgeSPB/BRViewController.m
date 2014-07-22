@@ -564,10 +564,14 @@
             self.viewWithTimer.hidden = NO;
             self.beforeAfter.hidden = NO;
             //there are openingSoon bridges
-            if (openSize == 1){
-             self.beforeAfter.text = @"СКОРО РАЗВЕДЕТСЯ";
-            }else{
-                self.beforeAfter.text = @"СКОРО РАЗВЕДУТСЯ";
+            if (self.scroller.frame.origin.y == 140){
+                self.beforeAfter.text = @"СКОРО РАЗВЕДЕТСЯ";
+            } else {
+                if (openSize == 1){
+                    self.beforeAfter.text = @"СКОРО РАЗВЕДЕТСЯ";
+                }else{
+                    self.beforeAfter.text = @"СКОРО РАЗВЕДУТСЯ";
+                }
             }
             for (int i = 0; i < openSize; i++){
                 
@@ -627,11 +631,14 @@
             frame = self.twoView.frame;
             frame.origin.y = self.viewWithTimer.frame.origin.y + self.viewWithTimer.frame.size.height + 26;
             self.twoView.frame = frame;
-            
-            if (closeSize == 1){
-             self.twoLabelbefor.text = @"СКОРО СВЕДЕТСЯ";
-            }else{
-                self.twoLabelbefor.text = @"СКОРО СВЕДУТСЯ";
+            if (self.scroller.frame.origin.y == 140){
+                self.twoLabelbefor.text = @"СКОРО СВЕДЕТСЯ";
+            } else {
+                if (closeSize == 1){
+                    self.twoLabelbefor.text = @"СКОРО СВЕДЕТСЯ";
+                }else{
+                    self.twoLabelbefor.text = @"СКОРО СВЕДУТСЯ";
+                }
             }
             for (int i = 0; i < closeSize; i++){
                 
@@ -685,10 +692,14 @@
             //there are closingSoon bridges and no openingSoon;
             self.viewWithTimer.hidden = NO;
             self.beforeAfter.hidden = NO;
-            if (closeSize == 1){
-             self.beforeAfter.text = @"СКОРО СВЕДЕТСЯ";
-            }else{
-               self.beforeAfter.text = @"СКОРО СВЕДУТСЯ";
+            if (self.scroller.frame.origin.y == 140){
+                self.beforeAfter.text = @"СКОРО СВЕДЕТСЯ";
+            } else {
+                if (closeSize == 1){
+                    self.beforeAfter.text = @"СКОРО СВЕДЕТСЯ";
+                }else{
+                    self.beforeAfter.text = @"СКОРО СВЕДУТСЯ";
+                }
             }
             for (int i = 0; i < closeSize; i++){
                 
@@ -1006,7 +1017,17 @@
         frame = self.viewWithTimer.frame;
         if (openSize > 0){
             frame.size.height = 25 * openSize;
+            if (openSize == 1){
+                self.beforeAfter.text = @"СКОРО РАЗВЕДЕТСЯ";
+            }else{
+                self.beforeAfter.text = @"СКОРО РАЗВЕДУТСЯ";
+            }
         }else {
+            if (closeSize == 1){
+                self.beforeAfter.text = @"СКОРО СВЕДЕТСЯ";
+            }else{
+                self.beforeAfter.text = @"СКОРО СВЕДУТСЯ";
+            }
             if (closeSize > 0) {
                 frame.size.height = 25 * closeSize;
             } else {
@@ -1021,6 +1042,11 @@
         //changing origins;
         if (openSize > 0 && closeSize > 0){
             //there are closingSoon bridges and openingSoon too;
+            if (closeSize == 1){
+                self.twoLabelbefor.text = @"СКОРО СВЕДЕТСЯ";
+            }else{
+                self.twoLabelbefor.text = @"СКОРО СВЕДУТСЯ";
+            }
             
             self.twoLabel.hidden = YES;
             self.twoView.hidden = NO;
@@ -1092,7 +1118,14 @@
         frame = self.viewWithTimer.frame;
         if (openSize > 0){
             frame.size.height = 25;
+            
+                self.beforeAfter.text = @"СКОРО РАЗВЕДЕТСЯ";
+            
+             
         }else {
+            
+                self.beforeAfter.text = @"СКОРО СВЕДЕТСЯ";
+            
             if (closeSize > 0) {
                 frame.size.height = 25;
             } else{
@@ -1106,6 +1139,8 @@
         //changing origins;
         if (openSize > 0 && closeSize > 0){
             //there are closingSoon bridges and openingSoon too;
+            
+            self.twoLabelbefor.text = @"СКОРО СВЕДЕТСЯ";
             
             self.twoLabel.hidden = YES;
             self.twoView.hidden = NO;
