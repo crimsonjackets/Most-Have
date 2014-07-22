@@ -39,6 +39,16 @@
     NSInteger currentTime;
     
     
+    
+    int openSize, closeSize, shortSize, openedSize, closedSize;
+    int openingSoon[13];//в старых индексах
+    int openingSoonTime[13];
+    int closingSoon[13];//в старых индексах
+    int closingSoonTime[13];
+    int shortClosed[13];
+    int openedNow[13];
+    int closedNow[13];
+    
 }
 @end
 
@@ -349,14 +359,11 @@
     NSArray *newBridgesInfo = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     //Массив, отображающий индексы старых данных на индексы новых
     int indexInNew[13] = {0, 1, 4, 5, 6, 7, 8, 3, 2, 10, 11, 12, 9};
-    int openSize = 0, closeSize = 0, shortSize = 0, openedSize = 0, closedSize = 0;
-    int openingSoon[13];//в старых индексах
-    int openingSoonTime[13];
-    int closingSoon[13];//в старых индексах
-    int closingSoonTime[13];
-    int shortClosed[13];
-    int openedNow[13];
-    int closedNow[13];
+    openSize = 0;
+    closeSize = 0;
+    shortSize = 0;
+    openedSize = 0;
+    closedSize = 0;
     //просчитываем текущую ситуацию и выставляем флаги(BOOL)
     for (int i = 0; i < 9; i++){
         MHBridgeInfo *currBridgeInfo = newBridgesInfo[indexInNew[i]];
@@ -545,19 +552,17 @@
                 [subview removeFromSuperview];
             }
         }
-        self.viewWithTimer.hidden = NO;
-        self.beforeAfter.hidden = NO;
+        self.viewWithTimer.hidden = YES;
+        self.beforeAfter.hidden = YES;
         self.firstMost.hidden = YES;
-        CGRect frame = self.viewWithTimer.frame;
-        frame.size.height += 20;
-        self.viewWithTimer.frame = frame;
-        frame = self.twoView.frame;
-        frame.size.height += 20;
-        self.twoView.frame = frame;
+        self.twoLabelbefor.hidden = YES;
+        self.twoLabel.hidden = YES;
+        self.twoView.hidden = YES;
         
         //Putting info about openingSoon/closingSoon bridges to screen
         if (openSize > 0){
-            
+            self.viewWithTimer.hidden = NO;
+            self.beforeAfter.hidden = NO;
             //there are openingSoon bridges
             if (openSize == 1){
              self.beforeAfter.text = @"СКОРО РАЗВЕДЕТСЯ";
@@ -583,7 +588,14 @@
                 
                 
                 newLabel.tag = i + 1;
-                newLabel.alpha = 1;
+                if (self.scroller.frame.origin.y == 60){
+                    newLabel.alpha = 1;
+                } else {
+                    if (i == 0)
+                        newLabel.alpha = 1;
+                    else
+                        newLabel.alpha = 0;
+                }
                 [newLabel setBackgroundColor:[UIColor clearColor]];
                 [newLabel setFont: [UIFont fontWithName:@"Arial" size:11.0]];
                 [newLabel setTextAlignment:NSTextAlignmentCenter];
@@ -593,7 +605,11 @@
                 [self.viewWithTimer addSubview:newLabel];
             }
             CGRect frame = self.viewWithTimer.frame;
-            frame.size.height = 25 * openSize;
+            if (self.scroller.frame.origin.y == 60){
+                frame.size.height = 25 * openSize;
+            } else {
+                frame.size.height = 25;
+            }
             self.viewWithTimer.frame = frame;
             
            
@@ -635,8 +651,16 @@
                 //     [loc distanceFromLocation:[[CLLocation alloc] initWithLatitude:((OneBridge *)[self.bridge.bridges objectForKey:[NSNumber numberWithInt: openingSoon[i]]]).coord.x longitude:((OneBridge *)[self.bridge.bridges objectForKey:[NSNumber numberWithInt: openingSoon[i]]]).coord.y ]]);
                 
                 
+                
                 newLabel.tag = i + 1;
-                newLabel.alpha = 1;
+                if (self.scroller.frame.origin.y == 60){
+                    newLabel.alpha = 1;
+                } else {
+                    if (i == 0)
+                        newLabel.alpha = 1;
+                    else
+                        newLabel.alpha = 0;
+                }
                 [newLabel setBackgroundColor:[UIColor clearColor]];
                 [newLabel setFont: [UIFont fontWithName:@"Arial" size:11.0]];
                 [newLabel setTextAlignment:NSTextAlignmentCenter];
@@ -648,14 +672,19 @@
                 
             }
             frame = self.twoView.frame;
-            frame.size.height = 25 * closeSize;
+            if (self.scroller.frame.origin.y == 60){
+                frame.size.height = 25 * closeSize;
+            } else {
+                frame.size.height = 25;
+            }
             self.twoView.frame = frame;
             
            
         }
         if (openSize == 0 && closeSize > 0){
             //there are closingSoon bridges and no openingSoon;
-            
+            self.viewWithTimer.hidden = NO;
+            self.beforeAfter.hidden = NO;
             if (closeSize == 1){
              self.beforeAfter.text = @"СКОРО СВЕДЕТСЯ";
             }else{
@@ -680,7 +709,14 @@
                 
                 
                 newLabel.tag = i + 1;
-                newLabel.alpha = 1;
+                if (self.scroller.frame.origin.y == 60){
+                    newLabel.alpha = 1;
+                } else {
+                    if (i == 0)
+                        newLabel.alpha = 1;
+                    else
+                        newLabel.alpha = 0;
+                }
                 [newLabel setBackgroundColor:[UIColor clearColor]];
                 [newLabel setFont: [UIFont fontWithName:@"Arial" size:11.0]];
                 [newLabel setTextAlignment:NSTextAlignmentCenter];
@@ -692,7 +728,11 @@
                 
             }
             CGRect frame = self.viewWithTimer.frame;
-            frame.size.height = 25 * closeSize;
+            if (self.scroller.frame.origin.y == 60){
+                frame.size.height = 25 * closeSize;
+            } else {
+                frame.size.height = 25;
+            }
             self.viewWithTimer.frame = frame;
             
          
@@ -831,92 +871,7 @@
 
 -(void)openTimers
 {
-    /*
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    [self refTimer];
-
-    NSInteger index=[self.bridge beforeAfterwithCalendar:calendar];
-    if(index>-1)
-    {
-    CGRect frame=self.viewWithTimer.frame;
-    CGRect frameFirst=self.firstMost.frame;
-    CGRect twoFrame=self.twoView.frame;
-    CGRect twoLabFrame=self.twoLabelbefor.frame;
-    
-    if (frame.size.height==25) {
-        
-        for(int i=1;i<[mostWithTimer count];i++)
-        {
-            frame.size.height+=25;
-            
-        }
-        if([mostWithTimer count]>1)
-        {
-            frame.size.height+=10;
-            frameFirst.origin.y+=5;
-        }
-        if (index==9)
-        {
-            frame.size.height-=25;
-            twoFrame.origin.y+=35;
-           // 
-            twoLabFrame.origin.y+=35;
-        }
-        myTimerForTimer = [NSTimer scheduledTimerWithTimeInterval:0.4
-                                                           target:self
-                                                         selector:@selector(addLabel)
-                                                         userInfo:nil
-                                                          repeats:NO];
-        if(index==10||index==13||index>=15||index==9)
-        {
-            self.beforeAfter.text=@"ВРЕМЯ ДО СВОДКИ МОСТОВ:";
-        }
-        else
-        {
-            if([mostWithTimer count]>1)
-                self.beforeAfter.text=@"ВРЕМЯ ДО РАЗВОДКИ МОСТОВ:";
-        }
-       // frameView.origin.y-=10;
-    }
-    else
-    {
-        if([mostWithTimer count]>1)
-        {
-            frameFirst.origin.y-=5;
-        }
-        
-        if (index==9)
-        {
-            twoFrame.origin.y-=35;
-            twoLabFrame.origin.y-=35;
-        }
-        for(int i=1;i<[mostWithTimer count];i++)
-        {
-            
-            UILabel * but=[self.viewWithTimer.subviews objectAtIndex:i];
-            but.alpha=0;
-        }
-        frame.size.height=25;
-    //    frameView.origin.y+=10;
-    }
-    
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.5];
-        self.viewWithTimer.frame=frame;
-      //  self.viewWithLabels.frame=frameView;
-        self.firstMost.frame=frameFirst;
-        self.twoView.frame=twoFrame;
-        self.twoLabelbefor.frame=twoLabFrame;
-    [UIView commitAnimations];
-        
-
     [self hideBridge:nil];
-    }
-    else
-    {
-        [self refTimer];
-    }
-     */
 }
 
 -(void)addLabel
@@ -1042,6 +997,64 @@
         frame.origin.y=60;
         scroller.frame=frame;
         NSLog(@"viewWithLabels.frame hideBride; before else");
+        //open viewWithTimer and twoView
+        
+        
+        
+        
+        //changing viewWithTimer and twoView sizes;
+        frame = self.viewWithTimer.frame;
+        if (openSize > 0){
+            frame.size.height = 25 * openSize;
+        }else {
+            if (closeSize > 0) {
+                frame.size.height = 25 * closeSize;
+            } else {
+                frame.size.height = 0;
+            }
+        }
+        self.viewWithTimer.frame = frame;
+    
+        
+        
+        
+        //changing origins;
+        if (openSize > 0 && closeSize > 0){
+            //there are closingSoon bridges and openingSoon too;
+            
+            self.twoLabel.hidden = YES;
+            self.twoView.hidden = NO;
+            self.twoLabelbefor.hidden = NO;
+            
+            frame = self.twoLabelbefor.frame;
+            frame.origin.y = self.viewWithTimer.frame.origin.y + self.viewWithTimer.frame.size.height + 2;
+            self.twoLabelbefor.frame = frame;
+            frame = self.twoView.frame;
+        }
+        
+        frame = self.twoView.frame;
+        if (closeSize > 0)
+            frame.size.height = 25 * closeSize;
+        else
+            frame.size.height = 0;
+        if (openSize > 0 && closeSize > 0){
+            frame.origin.y = self.viewWithTimer.frame.origin.y + self.viewWithTimer.frame.size.height + 26;
+        }
+        self.twoView.frame = frame;
+        
+        //make text visible
+        for (UIView *subview in [self.viewWithTimer subviews]) {
+            if (subview.tag >0) {
+                subview.alpha = 1;
+            }
+        }
+        for (UIView *subview in [self.twoView subviews]) {
+            if (subview.tag >0) {
+                subview.alpha = 1;
+            }
+        }
+        
+        
         if (self.twoView.hidden){
             CGFloat height = self.viewWithTimer.frame.origin.y + self.viewWithTimer.frame.size.height;
             frameLabels.origin.y = (yMenuBot - 60 - height) / 2.0;
@@ -1050,6 +1063,9 @@
             frameLabels.origin.y = (yMenuBot - 60 - height) / 2.0;
         }
         viewWithLabels.frame=frameLabels;
+        
+        
+        
         [UIView commitAnimations];
         rightImage.image=[UIImage imageNamed:@"butClose.png"];
     }
@@ -1070,6 +1086,58 @@
         
         frame.origin.y=140;
         scroller.frame=frame;
+        
+        
+        //changing viewWithTimer and twoView sizes;
+        frame = self.viewWithTimer.frame;
+        if (openSize > 0){
+            frame.size.height = 25;
+        }else {
+            if (closeSize > 0) {
+                frame.size.height = 25;
+            } else{
+                frame.size.height = 0;
+            }
+        }
+        self.viewWithTimer.frame = frame;
+        
+        
+        
+        //changing origins;
+        if (openSize > 0 && closeSize > 0){
+            //there are closingSoon bridges and openingSoon too;
+            
+            self.twoLabel.hidden = YES;
+            self.twoView.hidden = NO;
+            self.twoLabelbefor.hidden = NO;
+            
+            frame = self.twoLabelbefor.frame;
+            frame.origin.y = self.viewWithTimer.frame.origin.y + self.viewWithTimer.frame.size.height + 2;
+            self.twoLabelbefor.frame = frame;
+        }
+        
+        frame = self.twoView.frame;
+        if (closeSize > 0)
+            frame.size.height = 25;
+        else
+            frame.size.height = 0;
+        if (openSize > 0 && closeSize > 0){
+            frame.origin.y = self.viewWithTimer.frame.origin.y + self.viewWithTimer.frame.size.height + 26;
+        }
+        self.twoView.frame = frame;
+        
+        //make text invisible
+        for (UIView *subview in [self.viewWithTimer subviews]) {
+            if (subview.tag >1) {
+                subview.alpha = 0;
+            }
+        }
+        for (UIView *subview in [self.twoView subviews]) {
+            if (subview.tag >1) {
+                subview.alpha = 0;
+            }
+        }
+        
         if (self.twoView.hidden){
             CGFloat height = self.viewWithTimer.frame.origin.y + self.viewWithTimer.frame.size.height;
             frameLabels.origin.y = (yMenuBot - 140 - height) / 2.0;
@@ -1084,6 +1152,8 @@
     }
     
     [self.bridge refreshLoad:YES];
+    
+    
 }
 
 
