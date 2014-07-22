@@ -1014,13 +1014,8 @@
             }
         }
         self.viewWithTimer.frame = frame;
+    
         
-        frame = self.twoView.frame;
-        if (closeSize > 0)
-            frame.size.height = 25 * closeSize;
-        else
-            frame.size.height = 0;
-        self.twoView.frame = frame;
         
         
         //changing origins;
@@ -1035,9 +1030,17 @@
             frame.origin.y = self.viewWithTimer.frame.origin.y + self.viewWithTimer.frame.size.height + 2;
             self.twoLabelbefor.frame = frame;
             frame = self.twoView.frame;
-            frame.origin.y = self.viewWithTimer.frame.origin.y + self.viewWithTimer.frame.size.height + 26;
-            self.twoView.frame = frame;
         }
+        
+        frame = self.twoView.frame;
+        if (closeSize > 0)
+            frame.size.height = 25 * closeSize;
+        else
+            frame.size.height = 0;
+        if (openSize > 0 && closeSize > 0){
+            frame.origin.y = self.viewWithTimer.frame.origin.y + self.viewWithTimer.frame.size.height + 26;
+        }
+        self.twoView.frame = frame;
         
         //make text visible
         for (UIView *subview in [self.viewWithTimer subviews]) {
@@ -1098,12 +1101,7 @@
         }
         self.viewWithTimer.frame = frame;
         
-        frame = self.twoView.frame;
-        if (closeSize > 0)
-            frame.size.height = 25;
-        else
-            frame.size.height = 0;
-        self.twoView.frame = frame;
+        
         
         //changing origins;
         if (openSize > 0 && closeSize > 0){
@@ -1116,10 +1114,17 @@
             frame = self.twoLabelbefor.frame;
             frame.origin.y = self.viewWithTimer.frame.origin.y + self.viewWithTimer.frame.size.height + 2;
             self.twoLabelbefor.frame = frame;
-            frame = self.twoView.frame;
-            frame.origin.y = self.viewWithTimer.frame.origin.y + self.viewWithTimer.frame.size.height + 26;
-            self.twoView.frame = frame;
         }
+        
+        frame = self.twoView.frame;
+        if (closeSize > 0)
+            frame.size.height = 25;
+        else
+            frame.size.height = 0;
+        if (openSize > 0 && closeSize > 0){
+            frame.origin.y = self.viewWithTimer.frame.origin.y + self.viewWithTimer.frame.size.height + 26;
+        }
+        self.twoView.frame = frame;
         
         //make text invisible
         for (UIView *subview in [self.viewWithTimer subviews]) {
