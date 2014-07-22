@@ -267,7 +267,7 @@
     [self.allView addSubview:menuButton];
     
     
-    fourLabel=[[UILabel alloc]initWithFrame:CGRectMake(18, 118, 285, 45)];
+    fourLabel=[[UILabel alloc]initWithFrame:CGRectMake(18, 140, 285, 45)];
 
     fourLabel.hidden=YES;
     [fourLabel setText:@"НАСТРОЕНИЯ"];
