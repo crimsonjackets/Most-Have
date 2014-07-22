@@ -1063,6 +1063,7 @@
             frame.size.height = 25 * closeSize;
         else
             frame.size.height = 0;
+
         if (openSize > 0 && closeSize > 0){
             frame.origin.y = self.viewWithTimer.frame.origin.y + self.viewWithTimer.frame.size.height + 26;
         }

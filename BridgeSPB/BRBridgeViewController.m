@@ -148,6 +148,7 @@
     }
     if(menu.frame.origin.y>440+yMenuBot)
     {
+        
     CGRect frame=self.menu.frame;
     frame.origin.y=460+yMenuBot-25;
     [UIView beginAnimations:nil context:nil];
