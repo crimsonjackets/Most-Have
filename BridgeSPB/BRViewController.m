@@ -11,8 +11,7 @@
 #import "BRBridgeViewController.h"
 #import "OneBridge.h"
 #import "BRMAPViewController.h"
-#import "UAirship.h"
-#import "UAPush.h"
+
 #import "MoreInfoViewController.h"
 #import "InitSlViewController.h"
 #import "time.h"

@@ -21,7 +21,7 @@
 
 - (void)awakeFromNib
 {
-    self.menuItems = [NSArray arrayWithObjects:@"ГЛАВНАЯ",@"О ПРОЕКТЕ", @"PUSH", @"НОВОСТИ", nil];
+    self.menuItems = [NSArray arrayWithObjects:@"ГЛАВНАЯ",@"О ПРОЕКТЕ", @"PUSH", @"НОВОСТЬ ДНЯ", nil];
 }
 
 
