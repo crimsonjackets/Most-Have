@@ -7,12 +7,14 @@
 //
 
 #import "BRAppDelegate.h"
-#import "UAirship.h"
-#import "UAConfig.h"
-#import "UAPush.h"
-#import "UAInboxPushHandler.h"
 #import "BRPushViewController.h"
 #import "MHBridgeInfo.h"
+
+#import "PushWizard.h"
+
+static NSString *kAppKey = @"53cfd109a3fc27fe2b8b4598";
+
+
 
 @implementation BRAppDelegate
 @synthesize netStatus;
@@ -24,7 +26,9 @@
 
     sleep(1);
     [self initBridges];
+    [self initMessage];
     [self getBridgesInfo];
+    [BRAppDelegate getRSS];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:@"isFirstRun" forKey:@"isFirstRun"];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -42,32 +46,22 @@
     
     //[self customizeAppearance];
     [application setApplicationSupportsShakeToEdit:YES];
-    //Create Airship options dictionary and add the required UIApplication launchOptions
-    //NSMutableDictionary *takeOffOptions = [NSMutableDictionary dictionary];
-    //[takeOffOptions setValue:launchOptions forKey:UAirshipTakeOffOptionsLaunchOptionsKey];
-    UAConfig *config = [UAConfig defaultConfig];
-    // Call takeOff (which creates the UAirship singleton), passing in the launch options so the
-    // library can properly record when the app is launched from a push notification. This call is
-    // required.
-    //
-    // Populate AirshipConfig.plist with your app's info from https://go.urbanairship.com
-    [UAirship takeOff:config];
     
-    // Set the icon badge to zero on startup (optional)
-    [[UAPush shared] resetBadge];
+   
     
-    // Register for remote notfications with the UA Library. This call is required.
-    [[UAPush shared] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                                         UIRemoteNotificationTypeSound |
-                                                         UIRemoteNotificationTypeAlert)];
     
-    // Handle any incoming incoming push notifications.
-    // This will invoke `handleBackgroundNotification` on your UAPushNotificationDelegate.
-    [[UAPush shared] handleNotification:[launchOptions valueForKey:UIApplicationLaunchOptionsRemoteNotificationKey]
-                       applicationState:application.applicationState];
+    [[UIApplication sharedApplication]
+     registerForRemoteNotificationTypes: (UIRemoteNotificationTypeAlert |
+                                          UIRemoteNotificationTypeBadge |
+                                          UIRemoteNotificationTypeSound)];
+    
+    
 
     
-    
+    NSDictionary *pushNotificationPayload = [launchOptions valueForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    if(pushNotificationPayload){
+        [self application:application didReceiveRemoteNotification:pushNotificationPayload];
+    }
     
     // Override point for customization after application launch.
     return YES;
@@ -78,72 +72,21 @@
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    // Updates the device token and registers the token with UA.
-    NSString *yourAlias = @"YOUR NICK";
-    [UAPush shared].alias = yourAlias;
-    [[UAPush shared] registerDeviceToken:deviceToken];
+    
+    NSArray *arr = [[NSArray alloc] initWithObjects:@"value1", @"value2", @"value3", @"value4", @"value5", nil];
+    [PushWizard startWithToken:deviceToken andAppKey:kAppKey andValues:arr];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    
-   /*
-    // TestFlight API
-  //  TESTFLIGHT_CHECKPOINT(@"Receive Remote Notification");
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"getPush" object:nil];
-    
-    // Urban Airship
-    [[UAPush shared] handleNotification:userInfo applicationState:application.applicationState];
-    [[UAPush shared] resetBadge];
-    
-    NSDictionary *lastMessage=[userInfo objectForKey:@"aps"];
-    // shakeLabel.text=[lastMessage objectForKey:@"shakeLabel"];
-    
-    
-    
-    if([lastMessage objectForKey:@"pubDate"])
-    {
-
-        NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-        NSMutableArray *messageArray = nil;
-        NSMutableArray *message;
-        
-        
-        if ([standardUserDefaults objectForKey:@"pushMessage"])
-            messageArray = [standardUserDefaults objectForKey:@"pushMessage"];
-        
-
-        if (messageArray==nil) {
-
-            message=[[NSMutableArray alloc]initWithObjects:userInfo, nil];
-            [standardUserDefaults setObject:message forKey:@"pushMessage"];
-            [standardUserDefaults synchronize];
-        }
-        else{
-
-            message=[NSMutableArray arrayWithArray:messageArray];
-            [message addObject:userInfo];
-        }
-
-        [standardUserDefaults setObject:message forKey:@"pushMessage"];
-        [standardUserDefaults synchronize];
-
-
-    }
-    [UAInboxPushHandler ]; */
+    NSLog(@"[PUSH] Remote notification recieved");
+   [PushWizard handleNotification:userInfo];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     
-    if([UIApplication sharedApplication].applicationIconBadgeNumber>0)
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"getPush" object:nil];
-    }
-    
-    
-    [[UAPush shared] resetBadge];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"appDidBecomeActive" object:nil];
+    NSArray *arr = [[NSArray alloc] initWithObjects:@"value1", @"value2", @"value3", @"value4", @"value5", nil];
+    [PushWizard updateSessionWithValues:arr];
 
   
      // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
@@ -151,9 +94,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    //[UAirship land];
-    //Since 4.0.0 is internal. will be called automatically
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
 }
 
 - (void) updateInterfaceWithReachability: (Reachability*) curReach {
@@ -398,6 +339,91 @@
     dispatch_sync(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:@"updateBridgesInfo" object:nil];
     });
+}
+
+
++(void) getRSS
+{
+    NSString *urlAsString = @"http://mostotrest.com/press_center/news/rss/";
+    NSURL *url = [NSURL URLWithString:urlAsString];
+    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url
+                                                cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
+                                            timeoutInterval:30.0f]; //waiting for 30 seconds
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    [NSURLConnection
+     sendAsynchronousRequest:urlRequest
+     queue:queue
+     completionHandler:^(NSURLResponse *response,
+                         NSData *data,
+                         NSError *error) {
+         if ([data length] >0  &&
+             error == nil){
+             NSString *rss = [[NSString alloc] initWithData:data
+                                                    encoding:NSUTF8StringEncoding];
+             NSLog(@"RSS = %@", rss);
+             [self parseRSS: rss];
+         }
+         else if ([data length] == 0 &&
+                  error == nil){
+             NSLog(@"Nothing was downloaded.");
+             
+         }
+         else if (error != nil){
+             NSLog(@"Error happened = %@", error);
+             
+         }
+     }];
+
+}
+
++(void) parseRSS: (NSString *) rss
+{
+    //getting message
+    NSString * toFind = @"<yandex:full-text>";
+    NSRange range = [rss rangeOfString:toFind];
+    int beginIndex = range.location + range.length;
+    toFind = @"</yandex:full-text>";
+    range = [rss rangeOfString:toFind];
+    int endIndex = range.location;
+    range.location = beginIndex;
+    range.length = endIndex - beginIndex;
+    NSString *message = [rss substringWithRange: range];
+    
+    
+    
+    
+    //getting currDate
+    toFind = @"в ночь на ";
+    range = [message rangeOfString:toFind];
+    range.location += range.length;
+    range.length = 10;
+    NSString *currDate = [message substringWithRange:range];
+    //making current date <strong>
+    message = [NSString stringWithFormat:@"%@&lt;strong&gt;%@&lt;/strong&gt;%@",[message substringToIndex:range.location], currDate,
+               [message substringFromIndex:range.location + range.length]];
+    
+    NSLog(@"[RSS] Message = %@", message);
+    NSLog(@"[RSS] CurrDate = %@", currDate);
+    
+    [[NSUserDefaults standardUserDefaults] setObject:message forKey:@"messageRSS"];
+    [[NSUserDefaults standardUserDefaults] setObject:currDate forKey:@"currDateRSS"];
+    
+    [self updateRSS];
+    
+}
+
++(void) updateRSS
+{
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateRSS" object:nil];
+    });
+}
+
+-(void) initMessage
+{
+    [[NSUserDefaults standardUserDefaults] setObject:@"Ой! Не удалось загрузить новость дня." forKey:@"messageRSS"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"01.01" forKey:@"currDateRSS"];
+    NSLog(@"Message initialized.");
 }
 
 @end

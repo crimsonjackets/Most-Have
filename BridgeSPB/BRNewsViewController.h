@@ -14,25 +14,11 @@
 #import "BRBridgeViewController.h"
 #import "BRCellNewsCell.h"
 
-@interface BRNewsViewController : UIViewController<NSXMLParserDelegate,UITableViewDataSource,UITableViewDelegate> {
-    NSMutableData *rssData;
-    NSMutableArray *news;
-    NSString * currentElement;
-    NSMutableString *currentTitle;
-    NSMutableString *pubDate;
-}
-
-
+@interface BRNewsViewController : UIViewController 
 
 @property (nonatomic, strong) Bridge * bridges;
-@property (nonatomic, retain) NSMutableData *rssData;
-@property (nonatomic, retain) NSArray *news;
-@property (nonatomic, retain) NSString * currentElement;
-@property (nonatomic, retain) NSMutableString *currentTitle;
-@property (nonatomic, retain) NSMutableString *pubDate;
-@property (nonatomic, retain) NSMutableString *infoNew;
 @property (weak, nonatomic) IBOutlet UIImageView *lineSep;
-
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UITextView *messageTextView;
+@property (weak, nonatomic) IBOutlet UIView *infoView;
 
 @end
