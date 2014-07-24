@@ -42,7 +42,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStuff) name:@"updatePush" object:nil];
     self.view.layer.shadowOpacity = 0.75f;
     self.view.layer.shadowRadius = 10.0f;
     self.view.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -202,12 +203,10 @@
     }
         
     
-    NSDictionary *lastMessage=[[pushMessage objectAtIndex:[pushMessage count]-indexPath.row-1]objectForKey:@"aps"];
-    cell.timePush.text = [lastMessage objectForKey:@"pubDate"];
-    if([lastMessage objectForKey:@"infoPush"])
-        cell.infoPush.text=[lastMessage objectForKey:@"infoPush"];
-    else
-        cell.infoPush.text=[lastMessage objectForKey:@"alert"];
+    NSDictionary *lastMessage = [pushMessage objectAtIndex:[pushMessage count]-indexPath.row-1];
+    cell.timePush.text = [lastMessage objectForKey:@"title"];
+    cell.infoPush.text = [lastMessage objectForKey:@"message"];
+   
     
     UIImageView *backGr=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"pushWindowOff.png"]];
     CGRect frame=backGr.frame;

@@ -13,7 +13,7 @@
 @interface BRAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) NSDictionary *pushMessage;
+
 @property (assign, nonatomic) NetworkStatus netStatus;
 @property (strong, nonatomic) Reachability  *hostReach;
 
