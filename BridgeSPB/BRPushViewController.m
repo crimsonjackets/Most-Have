@@ -42,11 +42,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(killMenu) name:@"enterBackground" object:nil];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStuff) name:@"updatePush" object:nil];
     self.view.layer.shadowOpacity = 0.75f;
     self.view.layer.shadowRadius = 10.0f;
     self.view.layer.shadowColor = [UIColor blackColor].CGColor;
+    
     
     NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
     self.navigationController.navigationBar.hidden=YES;
@@ -65,6 +67,11 @@
      UIButton *newPush=[[UIButton alloc]initWithFrame:CGRectMake(40, 40, 40, 40)];
     [self.view addSubview:newPush];
 
+}
+
+-(void) killMenu
+{
+    [self.slidingViewController resetTopView];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

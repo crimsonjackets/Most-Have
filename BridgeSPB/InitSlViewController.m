@@ -14,6 +14,7 @@
 
 @implementation InitSlViewController
 @synthesize controller;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     UIStoryboard *storyboard;

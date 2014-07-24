@@ -102,10 +102,16 @@ static NSString *kAppKey = @"53d0b77ea3fc27f22b8b4585";
     
     NSArray *arr = [[NSArray alloc] initWithObjects:@"value1", @"value2", @"value3", @"value4", @"value5", nil];
     [PushWizard updateSessionWithValues:arr];
-
+    NSLog(@"DID BECOME ACTIVE");
   
      // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
+
+-(void) applicationDidEnterBackground:(UIApplication *)application
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"enterBackground" object:nil];
+}
+
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {

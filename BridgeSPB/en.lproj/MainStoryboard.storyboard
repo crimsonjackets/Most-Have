@@ -32,7 +32,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="KEEP CALM" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="0fh-T4-2jD">
-                                                        <rect key="frame" x="12" y="-1.9869898083196198e-05" width="296" height="50"/>
+                                                        <rect key="frame" x="12" y="-1.9869898079850892e-05" width="296" height="50"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
                                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
