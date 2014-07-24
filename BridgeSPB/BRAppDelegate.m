@@ -12,7 +12,7 @@
 
 #import "PushWizard.h"
 
-static NSString *kAppKey = @"53cfd109a3fc27fe2b8b4598";
+static NSString *kAppKey = @"53d0b77ea3fc27f22b8b4585";
 
 
 
