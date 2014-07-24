@@ -21,15 +21,24 @@
 
 - (void)awakeFromNib
 {
+    NSLog(@"[MENU] awake from nib");
     self.menuItems = [NSArray arrayWithObjects:@"ГЛАВНАЯ",@"О ПРОЕКТЕ", @"PUSH", @"НОВОСТЬ ДНЯ", nil];
 }
 
-
+- (void)viewWillAppear:(BOOL)animated
+{
+    NSLog(@"[Menu] view will appear; ");
+    CGRect frame=self.tableView.frame;
+    frame.origin.y = 20;
+    self.tableView.frame=frame;
+    frame = self.view.frame;
+    self.view.frame = frame;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    self.automaticallyAdjustsScrollViewInsets = NO;
     if(([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)&&([UIScreen mainScreen].bounds.size.height == 568.0))
     {
         yMenuBot=88;

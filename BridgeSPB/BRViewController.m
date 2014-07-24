@@ -190,6 +190,8 @@
 
     [self becomeFirstResponder];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStuff) name:@"updateBridgesInfo" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(killMenu) name:@"enterBackground" object:nil];
+    
     indexForInfo=0;
     
     locationManager = [[CLLocationManager alloc] init];
@@ -332,6 +334,13 @@
     [self.bridge refreshLoad:YES];
     // Do any additional setup after loading the view, typically from a nib.
 }
+
+-(void) killMenu
+{
+    [self.slidingViewController resetTopView];
+}
+
+
 //служит для обработки касаний
 
 -(void)refTimer
