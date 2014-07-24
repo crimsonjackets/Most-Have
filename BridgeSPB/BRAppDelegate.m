@@ -19,7 +19,7 @@ static NSString *kAppKey = @"53d0b77ea3fc27f22b8b4585";
 @implementation BRAppDelegate
 @synthesize netStatus;
 @synthesize hostReach;
-@synthesize pushMessage;
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -60,6 +60,7 @@ static NSString *kAppKey = @"53d0b77ea3fc27f22b8b4585";
     
     NSDictionary *pushNotificationPayload = [launchOptions valueForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if(pushNotificationPayload){
+        NSLog(@"APP lauched with PUSH = %@", pushNotificationPayload);
         [self application:application didReceiveRemoteNotification:pushNotificationPayload];
     }
     
@@ -79,7 +80,21 @@ static NSString *kAppKey = @"53d0b77ea3fc27f22b8b4585";
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     NSLog(@"[PUSH] Remote notification recieved");
-   [PushWizard handleNotification:userInfo];
+    NSLog(@"userInfo: %@", userInfo);
+    NSString *title = [userInfo objectForKey:@"t"];
+    NSString *message = [[[userInfo objectForKey:@"aps"] objectForKey:@"alert"] objectForKey:@"body"];
+    
+    NSDictionary *newPush = @{@"title": title,
+                              @"message": message};
+    
+    NSMutableArray *pushMessage = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"pushMessage"]];
+    if (!pushMessage){
+        pushMessage = [[NSMutableArray alloc] init];
+    }
+    [pushMessage addObject: newPush];
+    [[NSUserDefaults standardUserDefaults] setObject:pushMessage forKey:@"pushMessage"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updatePush" object:nil];
+    [PushWizard handleNotification:userInfo];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
