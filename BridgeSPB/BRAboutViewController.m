@@ -38,7 +38,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-  
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(killMenu) name:@"enterBackground" object:nil];
     self.view.layer.shadowOpacity = 0.75f;
     self.view.layer.shadowRadius = 10.0f;
     self.view.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -102,7 +102,10 @@
 
 
 
-
+-(void) killMenu
+{
+    [self.slidingViewController resetTopView];
+}
 
 #pragma mark - MFMailComposeController delegate
 
