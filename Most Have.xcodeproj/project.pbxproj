@@ -11,8 +11,8 @@
 		1F323D9419756A370043F404 /* MHBridgeTimeLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F323D9319756A370043F404 /* MHBridgeTimeLineView.m */; };
 		1F323D97197570070043F404 /* MHTimeLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F323D96197570070043F404 /* MHTimeLine.m */; };
 		1F323D9A197570C10043F404 /* MHBridgeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F323D99197570C10043F404 /* MHBridgeTableViewCell.m */; };
-		1FD5883619800E6A005BD26C /* libPushWizard.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FD5883319800E6A005BD26C /* libPushWizard.a */; };
-		1FD5883719800E6B005BD26C /* readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1FD5883519800E6A005BD26C /* readme.txt */; };
+		1FA64F8A1980EA2B00247308 /* libPushWizard.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FA64F871980EA2B00247308 /* libPushWizard.a */; };
+		1FA64F8B1980EA2B00247308 /* readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1FA64F891980EA2B00247308 /* readme.txt */; };
 		1FD588391980119B005BD26C /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1FD588381980119B005BD26C /* Entitlements.plist */; };
 		7909FFB616E8878C003908E8 /* OneBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 7909FFB516E8878C003908E8 /* OneBridge.m */; };
 		7915B91316E7903100F7D741 /* BRBridgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7915B91216E7903100F7D741 /* BRBridgeViewController.m */; };
@@ -136,9 +136,9 @@
 		1F323D98197570C10043F404 /* MHBridgeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHBridgeTableViewCell.h; sourceTree = "<group>"; };
 		1F323D99197570C10043F404 /* MHBridgeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHBridgeTableViewCell.m; sourceTree = "<group>"; };
 		1FA3321D197D0D720039A6A4 /* libUAirship-4.0.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libUAirship-4.0.0.a"; path = "Airship/libUAirship-4.0.0.a"; sourceTree = "<group>"; };
-		1FD5883319800E6A005BD26C /* libPushWizard.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushWizard.a; sourceTree = "<group>"; };
-		1FD5883419800E6A005BD26C /* PushWizard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushWizard.h; sourceTree = "<group>"; };
-		1FD5883519800E6A005BD26C /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
+		1FA64F871980EA2B00247308 /* libPushWizard.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushWizard.a; sourceTree = "<group>"; };
+		1FA64F881980EA2B00247308 /* PushWizard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushWizard.h; sourceTree = "<group>"; };
+		1FA64F891980EA2B00247308 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
 		1FD588381980119B005BD26C /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		7909FFB416E8878C003908E8 /* OneBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OneBridge.h; sourceTree = "<group>"; };
 		7909FFB516E8878C003908E8 /* OneBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OneBridge.m; sourceTree = "<group>"; };
@@ -285,11 +285,11 @@
 			files = (
 				79A9A62C1701ADBF00B6CD65 /* QuartzCore.framework in Frameworks */,
 				7927AF2916FB3C93000DDC52 /* CFNetwork.framework in Frameworks */,
-				1FD5883619800E6A005BD26C /* libPushWizard.a in Frameworks */,
 				7927AF2716FB3C8A000DDC52 /* MobileCoreServices.framework in Frameworks */,
 				7927AF2516FB3C83000DDC52 /* Security.framework in Frameworks */,
 				7927AF2316FB3C7C000DDC52 /* SystemConfiguration.framework in Frameworks */,
 				7927AF2116FB3C76000DDC52 /* libz.dylib in Frameworks */,
+				1FA64F8A1980EA2B00247308 /* libPushWizard.a in Frameworks */,
 				7927AF1F16FB3C69000DDC52 /* libsqlite3.dylib in Frameworks */,
 				7927AF1D16FB3C5E000DDC52 /* CoreTelephony.framework in Frameworks */,
 				7927AF1B16FB3C57000DDC52 /* MessageUI.framework in Frameworks */,
@@ -305,15 +305,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1FD5883219800E6A005BD26C /* libPushWizard */ = {
+		1FA64F861980EA2B00247308 /* libPushWizard */ = {
 			isa = PBXGroup;
 			children = (
-				1FD5883319800E6A005BD26C /* libPushWizard.a */,
-				1FD5883419800E6A005BD26C /* PushWizard.h */,
-				1FD5883519800E6A005BD26C /* readme.txt */,
+				1FA64F871980EA2B00247308 /* libPushWizard.a */,
+				1FA64F881980EA2B00247308 /* PushWizard.h */,
+				1FA64F891980EA2B00247308 /* readme.txt */,
 			);
-			name = libPushWizard;
-			path = ../../../Downloads/libPushWizard;
+			path = libPushWizard;
 			sourceTree = "<group>";
 		};
 		795EF67C171817E500342DD6 /*  Cache */ = {
@@ -512,6 +511,7 @@
 		79C20D5F16E0D28D00FDE6EF = {
 			isa = PBXGroup;
 			children = (
+				1FA64F861980EA2B00247308 /* libPushWizard */,
 				1FD588381980119B005BD26C /* Entitlements.plist */,
 				7979D0CB17300794009B2156 /* mosthave_icon144x144.png */,
 				7979D0C917300793009B2156 /* mosthave_icon72x72.png */,
@@ -577,7 +577,6 @@
 				1F323D99197570C10043F404 /* MHBridgeTableViewCell.m */,
 				79C20D7A16E0D28D00FDE6EF /* BRAppDelegate.h */,
 				79C20D7B16E0D28D00FDE6EF /* BRAppDelegate.m */,
-				1FD5883219800E6A005BD26C /* libPushWizard */,
 				79C20D8316E0D28D00FDE6EF /* MainStoryboard.storyboard */,
 				79C20D8616E0D28D00FDE6EF /* BRViewController.h */,
 				79C20D8716E0D28D00FDE6EF /* BRViewController.m */,
@@ -718,11 +717,11 @@
 				791AB64316F0833F00B718A3 /* aNevsk.png in Resources */,
 				791AB64416F0833F00B718A3 /* birzh.png in Resources */,
 				791AB64516F0833F00B718A3 /* bOhtin.png in Resources */,
+				1FA64F8B1980EA2B00247308 /* readme.txt in Resources */,
 				791AB64616F0833F00B718A3 /* butClose.png in Resources */,
 				791AB64716F0833F00B718A3 /* Litein.png in Resources */,
 				791AB64816F0833F00B718A3 /* lSmid.png in Resources */,
 				791AB64916F0833F00B718A3 /* sampson.png in Resources */,
-				1FD5883719800E6B005BD26C /* readme.txt in Resources */,
 				791AB64A16F0833F00B718A3 /* Troic.png in Resources */,
 				791AB64B16F0833F00B718A3 /* tuchk.png in Resources */,
 				791AB64C16F0833F00B718A3 /* volodar.png in Resources */,
@@ -925,6 +924,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/aleksej/Downloads/libPushWizard,
+					"$(PROJECT_DIR)/libPushWizard",
 				);
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_NAME = "Most Have";
@@ -948,6 +948,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/aleksej/Downloads/libPushWizard,
+					"$(PROJECT_DIR)/libPushWizard",
 				);
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_NAME = "Most Have";
