@@ -19,6 +19,6 @@
 
 
 - (void)updateInterfaceWithReachability: (Reachability*) curReach;
-
++ (void) getRSS;
 
 @end
