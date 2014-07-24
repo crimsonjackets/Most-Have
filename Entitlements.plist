@@ -5,11 +5,11 @@
 		<key>application-identifier</key>
 		<string>FM33Y8RWW7.com.purpletag.bridgespb</string>
 		<key>aps-environment</key>
-		<string>development</string>
+		<string>production</string>
 		<key>com.apple.developer.team-identifier</key>
 		<string>FM33Y8RWW7</string>
 		<key>get-task-allow</key>
-		<true/>
+		<false/>
 		<key>keychain-access-groups</key>
 		<array>
 			<string>FM33Y8RWW7.*</string>
