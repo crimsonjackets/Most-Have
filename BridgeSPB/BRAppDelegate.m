@@ -414,20 +414,20 @@ static NSString *kAppKey = @"53d0b77ea3fc27f22b8b4585";
     
     
     //getting currDate
-    toFind = @"в ночь на ";
-    range = [message rangeOfString:toFind];
-    range.location += range.length;
-    range.length = 10;
-    NSString *currDate = [message substringWithRange:range];
-    //making current date <strong>
-    message = [NSString stringWithFormat:@"%@&lt;strong&gt;%@&lt;/strong&gt;%@",[message substringToIndex:range.location], currDate,
-               [message substringFromIndex:range.location + range.length]];
+//    toFind = @"в ночь на ";
+//    range = [message rangeOfString:toFind];
+//    range.location += range.length;
+//    range.length = 10;
+//    NSString *currDate = [message substringWithRange:range];
+//    //making current date <strong>
+//    message = [NSString stringWithFormat:@"%@&lt;strong&gt;%@&lt;/strong&gt;%@",[message substringToIndex:range.location], currDate,
+//               [message substringFromIndex:range.location + range.length]];
     
     NSLog(@"[RSS] Message = %@", message);
-    NSLog(@"[RSS] CurrDate = %@", currDate);
+//    NSLog(@"[RSS] CurrDate = %@", currDate);
     
     [[NSUserDefaults standardUserDefaults] setObject:message forKey:@"messageRSS"];
-    [[NSUserDefaults standardUserDefaults] setObject:currDate forKey:@"currDateRSS"];
+//    [[NSUserDefaults standardUserDefaults] setObject:currDate forKey:@"currDateRSS"];
     
     [self updateRSS];
     
@@ -443,7 +443,7 @@ static NSString *kAppKey = @"53d0b77ea3fc27f22b8b4585";
 -(void) initMessage
 {
     [[NSUserDefaults standardUserDefaults] setObject:@"Ой! Не удалось загрузить новость дня." forKey:@"messageRSS"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"01.01" forKey:@"currDateRSS"];
+//    [[NSUserDefaults standardUserDefaults] setObject:@"01.01" forKey:@"currDateRSS"];
     NSLog(@"Message initialized.");
 }
 
