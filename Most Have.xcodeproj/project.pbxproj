@@ -849,10 +849,10 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/$(TAR- GET_NAME)/Entitlements.plist";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/$(TAR-GET_NAME)/Entitlements.plist";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Artem Baranov (FM33Y8RWW7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Artem Baranov (FM33Y8RWW7)";
+				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -870,8 +870,8 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "b780ad84-54a2-4cb1-a1f8-5909c1b6ed2e";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b780ad84-54a2-4cb1-a1f8-5909c1b6ed2e";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -890,9 +890,9 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/$(TAR- GET_NAME)/Entitlements.plist";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/$(TAR-GET_NAME)/Entitlements.plist";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Artem Baranov (FM33Y8RWW7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Artem Baranov (FM33Y8RWW7)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -903,12 +903,13 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8B30E68D-7108-44DD-AC65-7CE06CE0907E";
+				PROVISIONING_PROFILE = "b780ad84-54a2-4cb1-a1f8-5909c1b6ed2e";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b780ad84-54a2-4cb1-a1f8-5909c1b6ed2e";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = NO;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -916,8 +917,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Artem Baranov (96FQ8DFKJW)";
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Entitlements.plist";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Artem Baranov (FM33Y8RWW7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Artem Baranov (FM33Y8RWW7)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BridgeSPB/Most Have-Prefix.pch";
 				INFOPLIST_FILE = "BridgeSPB/Most Have-Info.plist";
@@ -929,8 +931,8 @@
 				);
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_NAME = "Most Have";
-				PROVISIONING_PROFILE = "289E0A5D-16EB-4667-A808-CBF699AA8772";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "b780ad84-54a2-4cb1-a1f8-5909c1b6ed2e";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b780ad84-54a2-4cb1-a1f8-5909c1b6ed2e";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
@@ -941,8 +943,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Artem Baranov (96FQ8DFKJW)";
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Entitlements.plist";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Artem Baranov (FM33Y8RWW7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Artem Baranov (FM33Y8RWW7)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BridgeSPB/Most Have-Prefix.pch";
 				INFOPLIST_FILE = "BridgeSPB/Most Have-Info.plist";
@@ -952,12 +955,13 @@
 					/Users/aleksej/Downloads/libPushWizard,
 					"$(PROJECT_DIR)/libPushWizard",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_NAME = "Most Have";
-				PROVISIONING_PROFILE = "8B30E68D-7108-44DD-AC65-7CE06CE0907E";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "b780ad84-54a2-4cb1-a1f8-5909c1b6ed2e";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b780ad84-54a2-4cb1-a1f8-5909c1b6ed2e";
 				TARGETED_DEVICE_FAMILY = 1;
-				VALIDATE_PRODUCT = NO;
+				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
