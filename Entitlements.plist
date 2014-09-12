@@ -17,9 +17,13 @@
         <key>application-identifier</key>
         <string>FM33Y8RWW7.com.purpletag.bridgespb</string>
         
+        <key>beta-reports-active</key>
+        <true/>
+        
         <key>get-task-allow</key>
         <false/>
     </dict>
+
 
 
 </plist>
